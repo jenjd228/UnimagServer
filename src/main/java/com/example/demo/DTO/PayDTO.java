@@ -4,20 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrdersDTO {
-
-    private Integer id;
-
-    private Integer userId;
+public class PayDTO {
 
     private Integer productId;
 
-    private Date dateOfOrder;
+    private String imageName;
 
+    private Integer price;
+
+    private String title;
+
+    private Integer count;
 }
-

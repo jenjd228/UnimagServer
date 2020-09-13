@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,6 +30,6 @@ public class Catalog {
 
     private String descriptions;
 
-    private Date date;
+    private LocalDateTime date;
 
 }
