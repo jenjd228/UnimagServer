@@ -48,6 +48,12 @@ public class GetController {
         return new ResponseEntity("NOT_FOUND",HttpStatus.BAD_REQUEST);
     }
 
+    @GetMapping("getCatalogSize")
+    public ResponseEntity getCatalogSize(){
+            return new ResponseEntity(catalogRepository.count(),HttpStatus.OK);
+    }
+
+
     @GetMapping("getUser/{secureKod}")
     public ResponseEntity getUser(@PathVariable String secureKod){
         //JSONObject json = new JSONObject();

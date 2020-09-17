@@ -79,11 +79,22 @@ public class PostController {
         return new ResponseEntity(hex,HttpStatus.OK);
     }
 
+    @PostMapping("checkUserForLoginIn")
+    public ResponseEntity checkUserForLoginIn(@RequestParam String email,@RequestParam String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        //@RequestParam String message, @RequestParam String mail
+        User user = userRepository.findByEmail(email);
+        if (user!=null){
+            if (user.getPassword().equals(password)){
+                return new ResponseEntity(user.getSecureKod(),HttpStatus.OK);
+            }
+            return new ResponseEntity("LOCKED",HttpStatus.LOCKED);
+        }
+        return new ResponseEntity("NOT_FOUND",HttpStatus.NOT_FOUND);
+    }
 
     @PostMapping("checkByData")
     public ResponseEntity checkByData(@RequestParam String email,@RequestParam String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         //@RequestParam String message, @RequestParam String mail
-        System.out.println(email+"  "+password);
         User user = userRepository.findByEmail(email);
         if (user!=null){
             if (user.getPassword().equals(password)){
