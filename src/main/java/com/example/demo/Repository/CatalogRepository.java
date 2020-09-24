@@ -11,9 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CatalogRepository extends CrudRepository<Catalog, Integer> {
+public interface CatalogRepository extends CrudRepository<Catalog, Long> {
+
     List<Catalog> findBy(Pageable pageable);
+
     Optional<Catalog> findById(Integer id);
+
     @Query("select o from Catalog o where id in :ids")
     List<Catalog> findByUserIds(@Param("ids") Iterable<Integer> ids);
 }

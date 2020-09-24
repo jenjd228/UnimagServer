@@ -1,5 +1,6 @@
 package com.example.demo.DTO;
 
+import com.example.demo.Model.BasketProduct;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,8 @@ public class BasketProductDTO {
     private String descriptions;
 
     private Integer count;
+
+    public void setCount(BasketProduct basketProduct){
+        this.count = basketProduct.getCount();
+    }
 }

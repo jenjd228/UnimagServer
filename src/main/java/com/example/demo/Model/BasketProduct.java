@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "basket_product")
@@ -23,4 +24,8 @@ public class BasketProduct {
     private Integer productId;
 
     private Integer count;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", insertable=false, updatable=false)
+    private Catalog catalogProduct;
 }

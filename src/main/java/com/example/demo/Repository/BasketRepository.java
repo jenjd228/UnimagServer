@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BasketRepository extends CrudRepository<BasketProduct, Integer> {
+public interface BasketRepository extends CrudRepository<BasketProduct, Long> {
     List<BasketProduct> findByUserId(Integer id);
     BasketProduct findByProductId(Integer id);
     void deleteById(Integer id);
