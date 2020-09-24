@@ -13,6 +13,22 @@ import java.util.Optional;
 @Repository
 public interface CatalogRepository extends CrudRepository<Catalog, Long> {
 
+    @Query("select o from Catalog o ORDER BY price DESC,date")
+    List<Catalog> findByPriceDESC(Pageable pageable);
+
+    @Query("select o from Catalog o ORDER BY price ASC,date")
+    List<Catalog> findByPriceASC(Pageable pageable);
+
+    @Query("select o from Catalog o WHERE o.category = ?1 ORDER BY date")
+    List<Catalog> findByCategory(Pageable pageable,String category);
+
+    @Query("select o from Catalog o WHERE o.category = ?1 ORDER BY price ASC,date")
+    List<Catalog> findByCategoryPriceASC(Pageable pageable,String category);
+
+    @Query("select o from Catalog o WHERE o.category = ?1 ORDER BY price DESC,date")
+    List<Catalog> findByCategoryPriceDESC(Pageable pageable,String category);
+
+    @Query("select o from Catalog o ORDER BY date")
     List<Catalog> findBy(Pageable pageable);
 
     Optional<Catalog> findById(Integer id);

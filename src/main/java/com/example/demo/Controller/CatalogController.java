@@ -25,9 +25,9 @@ public class CatalogController {
         return new ResponseEntity(catalogRepository.count(), HttpStatus.OK);
     }
 
-    @GetMapping("getList/{currentNumberList}")
-    public ResponseEntity getList(@PathVariable Integer currentNumberList){
-        AbstractMap.SimpleEntry<String, Object[]> serviceResponse = catalogService.getList(currentNumberList);
+    @GetMapping("getList/{currentNumberList}/{category}/{price}/{whereFlag}")
+    public ResponseEntity getList(@PathVariable Integer currentNumberList,@PathVariable String category,@PathVariable String price,@PathVariable String whereFlag){
+        AbstractMap.SimpleEntry<String, Object[]> serviceResponse = catalogService.getList(currentNumberList,category,price,whereFlag);
         if ("OK".equals(serviceResponse.getKey())) {
             return new ResponseEntity(serviceResponse.getValue(), HttpStatus.OK);
         }

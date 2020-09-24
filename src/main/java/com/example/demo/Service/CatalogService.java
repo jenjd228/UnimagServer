@@ -14,19 +14,33 @@ public class CatalogService {
     @Autowired
     CatalogRepository catalogRepository;
     ///"+currentNumberList +"/"+ sortByTime+"/"+sortByCategory+"/"+sortByPrice    // sortByPriceASC sortByPriceDESC
-    public AbstractMap.SimpleEntry<String, Object[]> getList(Integer currentNumberList){
-
+    public AbstractMap.SimpleEntry<String, Object[]> getList(Integer currentNumberList , String category,String price, String whereFlag){
+        PageRequest pageable = PageRequest.of(currentNumberList,8);
+        Object[] list;
 
         long productCount = catalogRepository.count();
-        PageRequest pageable = PageRequest.of(currentNumberList,8);
-        if (productCount==0){
+        int countGroup = (int) ((productCount/8)+1);//например 100/8 = 12.5 значит всего 13 групп
+        if (productCount==0 || currentNumberList>=countGroup){
             return new AbstractMap.SimpleEntry<>("ERROR", new Object[0]);
         }
-        int countGroup = (int) ((productCount/8)+1);//например 100/8 = 12.5 значит всего 13 групп
-        if (currentNumberList<=countGroup){
-            Object[] list = catalogRepository.findBy(pageable).toArray();
-            return new AbstractMap.SimpleEntry<>("OK", list);
+
+        if (whereFlag.equals("true")){
+            if (price.equals("price DESC")){
+                list = catalogRepository.findByCategoryPriceDESC(pageable,category).toArray();
+            }else if (price.equals("price ASC")){
+                list = catalogRepository.findByCategoryPriceASC(pageable,category).toArray();
+            }else {
+                list = catalogRepository.findByCategory(pageable,category).toArray();
+            }
+        }else {
+            if (price.equals("price DESC")){
+                list = catalogRepository.findByPriceDESC(pageable).toArray();
+            }else if (price.equals("price ASC")){
+                list = catalogRepository.findByPriceASC(pageable).toArray();
+            }else {
+                list = catalogRepository.findBy(pageable).toArray();
+            }
         }
-        return new AbstractMap.SimpleEntry<>("ERROR", new Object[0]);
+        return new AbstractMap.SimpleEntry<>("OK", list);
     }
 }
