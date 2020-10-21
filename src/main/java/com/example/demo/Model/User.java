@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -16,7 +18,7 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private String email;
@@ -39,4 +41,23 @@ public class User {
 
     @Column(name = "secure_kod")
     private String secureKod;
+
+    @OneToMany
+    @JoinColumn(name = "user_id",referencedColumnName = "id", insertable=false, updatable=false)
+    private List<BasketProduct> basketProducts;
+
+    @OneToMany
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    private List<Orders> ordersList;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "order_2_product",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Orders> roles;
+
+    public void addPoints(Integer points) {
+        this.points += points;
+    }
 }

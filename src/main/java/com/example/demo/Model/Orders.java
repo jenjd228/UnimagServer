@@ -5,27 +5,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
+public class Orders implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "user_id")
     private Integer userId;
 
-    @Column(name = "product_id")
-    private Integer productId;
+    @Column(name = "order_id")
+    private Integer orderId;
 
     @Column(name = "data_of_order")
-    private Date dataOfOrder; //Дата заказа
+    private Long dataOfOrder;
 
-    private String status; //Статус товара
+    private String status;
+
+    @OneToMany
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id",insertable=false, updatable=false)
+    private List<Order2Product> order2ProductsList;
 
 }

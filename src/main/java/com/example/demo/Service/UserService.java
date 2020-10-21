@@ -1,8 +1,11 @@
 package com.example.demo.Service;
 
+import com.example.demo.DTO.OrdersDTO;
 import com.example.demo.DTO.UserDTO;
+import com.example.demo.Model.Orders;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +14,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.AbstractMap;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
 public class UserService {
+
+    @Autowired
+    ModelMapper modelMapper2;
 
     @Autowired
     UserRepository userRepository;
@@ -25,6 +32,22 @@ public class UserService {
             return "OK";
         }
         return "NOT_FOUND";
+    }
+
+    public Object[] getOrdersList(String secureKod) {
+        User user = userRepository.findBySecureKod(secureKod);
+        if (user!=null){
+            return Objects.requireNonNull(user.getOrdersList()).stream().map(this::convertToDto).toArray();
+        }
+        return new Object[0];
+    }
+
+    private OrdersDTO convertToDto(Orders order) {
+        return Objects.isNull(order) ? null : modelMapper2.map(order,OrdersDTO.class);
+        /**
+         *
+         * Настроить дату обьекта ордер и настроить маппинг его списка
+         */
     }
 
     public AbstractMap.SimpleEntry<String, UserDTO> getUser(String secureKod){

@@ -34,7 +34,7 @@ public class BasketService {
         if (user==null){
             return new AbstractMap.SimpleEntry<>("USER_NOT_FOUND", new Object[0]);
         }
-        List<BasketProduct> list = basketRepository.findByUserId(user.getId());
+        List<BasketProduct> list = user.getBasketProducts();
         if (list.size()!=0){
             Object[] list3 = Objects.requireNonNull(list).stream().map(this::convertToDto).toArray();
             return new AbstractMap.SimpleEntry<>("OK", list3);
@@ -55,10 +55,11 @@ public class BasketService {
             return "USER_NOT_FOUND";
         }
 
-        List<BasketProduct> list = basketRepository.findByUserId(user.getId());
+        List<BasketProduct> list = user.getBasketProducts();
         if (list!=null){
             for (BasketProduct basketProduct:list){
                 if (basketProduct.getProductId().equals(productId)){
+                    System.out.println(basketProduct.getId());
                     basketRepository.deleteById(basketProduct.getId());
                     break;
                 }
@@ -71,16 +72,16 @@ public class BasketService {
     public String addToBasket(String secureKod,String id){
         User user = userRepository.findBySecureKod(secureKod);
         if (user!=null){
-            Optional<Catalog> product = catalogRepository.findById(Integer.valueOf(id));
-            if (product.isPresent()){
+            BasketProduct product = basketRepository.findById(Integer.valueOf(id));
+            if (product==null){
                 BasketProduct basketProduct = new BasketProduct();
                 basketProduct.setUserId(user.getId());
-                basketProduct.setProductId(product.get().getId());
+                basketProduct.setProductId(Integer.parseInt(id));
                 basketProduct.setCount(1);
                 basketRepository.save(basketProduct);
                 return "OK";
             }
-            return "PRODUCT_NOT_FOUND";
+            return "PRODUCT_IS_PRESENT";
         }
         return "USER_NOT_FOUND";
     }
@@ -88,7 +89,7 @@ public class BasketService {
     public String deleteOneProductFromBasket(String secureKod,String id){
         User user = userRepository.findBySecureKod(secureKod);
         if (user!=null){
-            List<BasketProduct> basketProduct1 = basketRepository.findByUserId(user.getId());
+            List<BasketProduct> basketProduct1 = user.getBasketProducts();
             for (BasketProduct basketProduct:basketProduct1){
                 if (basketProduct.getProductId().toString().equals(id)){
                     basketProduct.setCount(basketProduct.getCount()-1);
@@ -104,7 +105,7 @@ public class BasketService {
     public String addOneProductToBasket(String secureKod,String id){
         User user = userRepository.findBySecureKod(secureKod);
         if (user!=null){
-            List<BasketProduct> basketProduct1 = basketRepository.findByUserId(user.getId());
+            List<BasketProduct> basketProduct1 = user.getBasketProducts();
             for (BasketProduct basketProduct:basketProduct1){
                 if (basketProduct.getProductId().toString().equals(id)){
                     basketProduct.setCount(basketProduct.getCount()+1);

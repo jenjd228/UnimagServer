@@ -3,7 +3,6 @@ package com.example.demo.Service;
 import com.example.demo.Repository.CatalogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.AbstractMap;
@@ -13,13 +12,15 @@ public class CatalogService {
 
     @Autowired
     CatalogRepository catalogRepository;
-    ///"+currentNumberList +"/"+ sortByTime+"/"+sortByCategory+"/"+sortByPrice    // sortByPriceASC sortByPriceDESC
+
     public AbstractMap.SimpleEntry<String, Object[]> getList(Integer currentNumberList , String category,String price, String whereFlag){
-        PageRequest pageable = PageRequest.of(currentNumberList,8);
+        PageRequest pageable = PageRequest.of(currentNumberList,6);
         Object[] list;
 
+        System.out.println(currentNumberList+"\n"+category+"\n"+price+"\n"+whereFlag);
+
         long productCount = catalogRepository.count();
-        int countGroup = (int) ((productCount/8)+1);//например 100/8 = 12.5 значит всего 13 групп
+        int countGroup = (int) ((productCount/6)+1);//например 100/8 = 12.5 значит всего 13 групп
         if (productCount==0 || currentNumberList>=countGroup){
             return new AbstractMap.SimpleEntry<>("ERROR", new Object[0]);
         }

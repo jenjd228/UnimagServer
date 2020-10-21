@@ -1,7 +1,6 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Service.PartnerService;
-import com.example.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,6 @@ public class PartnerController {
 
     @Autowired
     private PartnerService partnerService;
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping("userIsSub/{secureKod}")
     public ResponseEntity getUser(@PathVariable String secureKod){

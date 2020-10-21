@@ -1,14 +1,12 @@
-package com.example.demo;
+package com.example.demo.confic;
 
 import com.example.demo.DTO.BasketProductDTO;
-import com.example.demo.DTO.UserDTO;
-import com.example.demo.Model.BasketProduct;
+import com.example.demo.DTO.OrdersDTO;
 import com.example.demo.Model.Catalog;
-import com.example.demo.Model.User;
+import com.example.demo.Model.Orders;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -23,7 +21,19 @@ public class SpringConfig {
                 map().setProductId(source.getId());
             }
         };
-        //modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        modelMapper.addMappings(propertyMap);
+
+        return modelMapper;
+    }
+
+    @Bean
+    public ModelMapper modelMapper2() {
+        ModelMapper modelMapper = new ModelMapper();
+        PropertyMap<Orders, OrdersDTO> propertyMap = new PropertyMap<>() {
+            protected void configure() {
+                map().setLocalDate(source.getDataOfOrder());
+            }
+        };
         modelMapper.addMappings(propertyMap);
 
         return modelMapper;

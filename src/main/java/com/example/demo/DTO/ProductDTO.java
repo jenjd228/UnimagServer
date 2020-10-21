@@ -8,8 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
+
     String imageName; //Имя картинки (без расширения)
+
     String title; //Название товара
+
     String description; //Описание товара
+
     Integer price;
 }

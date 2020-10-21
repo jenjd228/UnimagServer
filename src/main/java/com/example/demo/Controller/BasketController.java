@@ -38,8 +38,9 @@ public class BasketController {
     public ResponseEntity addToBasket(@RequestParam String id, @RequestParam String secureKod) {
         String serviceResponse = basketService.addToBasket(secureKod,id);
         switch (serviceResponse){
-            case "OK": return new ResponseEntity("ok",HttpStatus.OK);
+            case "OK": return new ResponseEntity("OK",HttpStatus.OK);
             case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.BAD_REQUEST);
+            case "PRODUCT_IS_PRESENT" : return new ResponseEntity("PRODUCT_IS_PRESENT",HttpStatus.BAD_REQUEST);
             default: return new ResponseEntity("PRODUCT_NOT_FOUND",HttpStatus.NOT_FOUND);
         }
     }

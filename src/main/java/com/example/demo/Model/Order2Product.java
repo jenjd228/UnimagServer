@@ -5,26 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "basket_product")
+@Table(name = "order_2_product")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BasketProduct {
+public class Order2Product implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column(name = "order_id")
+    private Integer orderId;
 
     @Column(name = "product_id")
     private Integer productId;
 
-    private Integer count;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", insertable=false, updatable=false)
-    private Catalog catalogProduct;
 }

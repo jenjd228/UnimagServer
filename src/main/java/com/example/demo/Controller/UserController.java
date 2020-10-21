@@ -1,6 +1,9 @@
 package com.example.demo.Controller;
 
 import com.example.demo.DTO.UserDTO;
+import com.example.demo.Model.BasketProduct;
+import com.example.demo.Model.User;
+import com.example.demo.Repository.UserRepository;
 import com.example.demo.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,12 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.AbstractMap;
+import java.util.List;
 
 @RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("checkBySecureKod/{secureKod}")
     public ResponseEntity checkBySecureKod(@PathVariable String secureKod) {
@@ -71,6 +78,13 @@ public class UserController {
             }
             default : return new ResponseEntity(serviceResponse,HttpStatus.OK);
         }
+    }
+
+    @GetMapping("getUserBas")
+    public List<BasketProduct> qwe(){
+        User user = userRepository.findByEmail("ya.kocaba@gmail.com");
+        System.out.println(user.getFio());
+        return user.getBasketProducts();
     }
 
 }

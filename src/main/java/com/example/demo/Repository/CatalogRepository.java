@@ -31,7 +31,7 @@ public interface CatalogRepository extends CrudRepository<Catalog, Long> {
     @Query("select o from Catalog o ORDER BY date")
     List<Catalog> findBy(Pageable pageable);
 
-    Optional<Catalog> findById(Integer id);
+    Catalog findById(Integer id);
 
     @Query("select o from Catalog o where id in :ids")
     List<Catalog> findByUserIds(@Param("ids") Iterable<Integer> ids);
