@@ -83,7 +83,6 @@ public class UserController {
     @GetMapping("getUserBas")
     public List<BasketProduct> qwe(){
         User user = userRepository.findByEmail("ya.kocaba@gmail.com");
-        System.out.println(user.getFio());
         return user.getBasketProducts();
     }
 

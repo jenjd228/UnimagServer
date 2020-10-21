@@ -25,6 +25,6 @@ public class BasketProduct {
     private Integer count;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", insertable=false, updatable=false)
+    @JoinColumn(name = "product_id")
     private Catalog catalogProduct;
 }

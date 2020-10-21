@@ -43,7 +43,7 @@ public class User {
     private String secureKod;
 
     @OneToMany
-    @JoinColumn(name = "user_id",referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private List<BasketProduct> basketProducts;
 
     @OneToMany

@@ -17,7 +17,7 @@ public class CatalogService {
         PageRequest pageable = PageRequest.of(currentNumberList,6);
         Object[] list;
 
-        System.out.println(currentNumberList+"\n"+category+"\n"+price+"\n"+whereFlag);
+        //System.out.println(currentNumberList+"\n"+category+"\n"+price+"\n"+whereFlag);
 
         long productCount = catalogRepository.count();
         int countGroup = (int) ((productCount/6)+1);//например 100/8 = 12.5 значит всего 13 групп

@@ -54,7 +54,7 @@ public class BasketService {
         if (user==null){
             return "USER_NOT_FOUND";
         }
-
+        System.out.println("Мы тут");
         List<BasketProduct> list = user.getBasketProducts();
         if (list!=null){
             for (BasketProduct basketProduct:list){
@@ -72,7 +72,7 @@ public class BasketService {
     public String addToBasket(String secureKod,String id){
         User user = userRepository.findBySecureKod(secureKod);
         if (user!=null){
-            BasketProduct product = basketRepository.findById(Integer.valueOf(id));
+            BasketProduct product = basketRepository.findByIdInUserBasket(user.getId(),Integer.valueOf(id));
             if (product==null){
                 BasketProduct basketProduct = new BasketProduct();
                 basketProduct.setUserId(user.getId());
