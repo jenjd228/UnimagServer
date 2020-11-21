@@ -1,14 +1,14 @@
 package com.example.demo.Model;
 
+
+import com.example.demo.DTO.ImageDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,5 +31,9 @@ public class Catalog {
     private String descriptions;
 
     private LocalDateTime date;
+
+    @OneToMany()
+    @JoinColumn(name = "product_id", referencedColumnName = "id",insertable=false, updatable=false)
+    private List<Image> listImage;
 
 }

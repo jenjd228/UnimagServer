@@ -79,6 +79,8 @@ public class UserService {
         user.setRegistrationDate(currentDate.getTime());
         user.setMaxDate(calendarFrom.getTime());
         user.setSecureKod(hex);
+        user.setFio("Отредактируйте профиль");
+        user.setBirthday("Отредактируйте профиль");
 
         userRepository.save(user);
         return hex;

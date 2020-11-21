@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProductDTO {
 
-    String imageName; //Имя картинки (без расширения)
+    private String imageName; //Имя картинки (без расширения)
 
-    String title; //Название товара
+    private String title; //Название товара
 
-    String description; //Описание товара
+    private String description; //Описание товара
 
-    Integer price;
+    private Integer price;
 }

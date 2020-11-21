@@ -22,6 +22,10 @@ INSERT INTO order_2_product (id,order_id,product_id) VALUES (2,"12323123",1);
 INSERT INTO order_2_product (id,order_id,product_id) VALUES (3,"12323123",3);
 INSERT INTO order_2_product (id,order_id,product_id) VALUES (4,"12323123",5);
 
+INSERT INTO images (id,product_id,image_name) VALUES (1,1,"1.jpg");
+INSERT INTO images (id,product_id,image_name) VALUES (2,1,"1.jpg");
+INSERT INTO images (id,product_id,image_name) VALUES (3,1,"1.jpg");
+
 
 INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (12,'5.jpg','Souvenirs',1234200,'Футболка Юфу','Футболка Юфу','2015-11-08 10:48:44');
 INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (13,'16.jpg','Souvenirs',9002,'Флешка ЮФУ ясень','Флешка из массива ясеня','2011-11-02 12:44:44');

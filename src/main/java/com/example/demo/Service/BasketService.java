@@ -34,8 +34,9 @@ public class BasketService {
         if (user==null){
             return new AbstractMap.SimpleEntry<>("USER_NOT_FOUND", new Object[0]);
         }
+
         List<BasketProduct> list = user.getBasketProducts();
-        if (list.size()!=0){
+        if (list.size() != 0){
             Object[] list3 = Objects.requireNonNull(list).stream().map(this::convertToDto).toArray();
             return new AbstractMap.SimpleEntry<>("OK", list3);
         }
@@ -69,14 +70,14 @@ public class BasketService {
         return "PRODUCT_NOT_FOUND";
     }
 
-    public String addToBasket(String secureKod,String id){
+    public String addToBasket(String secureKod,Integer id){
         User user = userRepository.findBySecureKod(secureKod);
         if (user!=null){
-            BasketProduct product = basketRepository.findByIdInUserBasket(user.getId(),Integer.valueOf(id));
+            BasketProduct product = basketRepository.findByIdInUserBasket(user.getId(),id);
             if (product==null){
                 BasketProduct basketProduct = new BasketProduct();
                 basketProduct.setUserId(user.getId());
-                basketProduct.setProductId(Integer.parseInt(id));
+                basketProduct.setProductId(id);
                 basketProduct.setCount(1);
                 basketRepository.save(basketProduct);
                 return "OK";
