@@ -26,6 +26,12 @@ public class BasketProduct {
 
     private Integer count;
 
+    @Column(name="color")
+    private String color;
+
+    @Column(name="size")
+    private Integer size;
+
     @OneToOne()
     @JoinColumn(name = "product_id", insertable = false,updatable = false)
     private Catalog catalogProduct;

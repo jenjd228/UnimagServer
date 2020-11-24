@@ -35,8 +35,13 @@ public class BasketController {
     }
 
     @PostMapping("addToBasket")
-    public ResponseEntity addToBasket(@RequestParam String id, @RequestParam String secureKod) {
-        String serviceResponse = basketService.addToBasket(secureKod,Integer.parseInt(id));
+    public ResponseEntity addToBasket(@RequestParam String id, @RequestParam String color, String size, @RequestParam String secureKod) {
+        String serviceResponse;
+        if (size.equals("null")) {
+            serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, null);
+        } else {
+            serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, Integer.valueOf(size));
+        }
         switch (serviceResponse){
             case "OK": return new ResponseEntity("OK",HttpStatus.OK);
             case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.BAD_REQUEST);

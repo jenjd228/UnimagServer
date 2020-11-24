@@ -46,6 +46,8 @@ public class BasketService {
     private BasketProductDTO convertToDto(BasketProduct product) {
         BasketProductDTO basketProductDTO = Objects.isNull(product.getCatalogProduct()) ? null : modelMapper.map(product.getCatalogProduct(), BasketProductDTO.class);
         basketProductDTO.setCount(product);
+        basketProductDTO.setColor(product.getColor());
+        basketProductDTO.setSize(product.getSize());
         return basketProductDTO;
     }
 
@@ -70,19 +72,36 @@ public class BasketService {
         return "PRODUCT_NOT_FOUND";
     }
 
-    public String addToBasket(String secureKod,Integer id){
+    public String addToBasket(String secureKod,Integer id, String color, Integer size){
         User user = userRepository.findBySecureKod(secureKod);
-        if (user!=null){
-            BasketProduct product = basketRepository.findByIdInUserBasket(user.getId(),id);
-            if (product==null){
+        if (user!=null) {
+            List<BasketProduct> product = basketRepository.findByIdInUserBasket(user.getId(), id);
+            //Если такого товара раньше не было
+            if (product.size() == 0) {
                 BasketProduct basketProduct = new BasketProduct();
                 basketProduct.setUserId(user.getId());
                 basketProduct.setProductId(id);
                 basketProduct.setCount(1);
+                basketProduct.setColor(color);
+                basketProduct.setSize(size);
                 basketRepository.save(basketProduct);
                 return "OK";
+            } else {
+                for (int i = 0; i < product.size(); i++) {
+                    //Если товар имеет другой цвет/размер, ТО добавить его в корзину
+                    if (!product.get(i).getColor().equals(color) || product.get(i).getSize() != size) {
+                        BasketProduct basketProduct = new BasketProduct();
+                        basketProduct.setUserId(user.getId());
+                        basketProduct.setProductId(id);
+                        basketProduct.setCount(1);
+                        basketProduct.setColor(color);
+                        basketProduct.setSize(size);
+                        basketRepository.save(basketProduct);
+                        return "OK";
+                    }
+                    return "PRODUCT_IS_PRESENT";
+                }
             }
-            return "PRODUCT_IS_PRESENT";
         }
         return "USER_NOT_FOUND";
     }
