@@ -25,6 +25,8 @@ public class OrdersDTO {
 
     private String status;
 
+    private String pickUpPoint; //Пункт выдачи
+
     private List<Order2ProductDTO> order2ProductsList;
 
     public void setLocalDate(Long time){

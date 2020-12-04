@@ -30,7 +30,7 @@ public class OrderService {
         this.order2ProductRepository = order2ProductRepository;
     }
 
-    public void addToOrder(String secureKod, List<String> stringIds,String orderId,String totalMoney){
+    public void addToOrder(String secureKod, List<String> stringIds,String orderId,String totalMoney, String pickUpPoint){
        User user = userRepository.findBySecureKod(secureKod);
        List<Order2Product> order2ProductList = new ArrayList<>();
        if (user!=null){
@@ -48,6 +48,7 @@ public class OrderService {
            order.setDataOfOrder(currentDate);
            order.setOrderId(Integer.parseInt(orderId));
            order.setStatus("Не доставлено");
+           order.setPickUpPoint(pickUpPoint);
            order.setUserId(user.getId());
 
            for (String productId : stringIds){

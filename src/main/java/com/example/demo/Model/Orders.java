@@ -27,6 +27,9 @@ public class Orders implements Serializable {
     @Column(name = "data_of_order")
     private Long dataOfOrder;
 
+    @Column(name = "pick_up_point")
+    private String pickUpPoint;
+
     private String status;
 
     @OneToMany

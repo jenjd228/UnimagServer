@@ -55,14 +55,14 @@ public class DefaultController {
     }
 
     @PostMapping("addToOrders")
-    public ResponseEntity addToOrders(@RequestParam String stringIds, @RequestParam String secureKod, @RequestParam String orderId, @RequestParam String totalMoney) {
+    public ResponseEntity addToOrders(@RequestParam String stringIds, @RequestParam String secureKod, @RequestParam String orderId, @RequestParam String totalMoney, @RequestParam String pickUpPoint) {
         stringIds = stringIds.replaceAll("\\[","").replaceAll("]",""); // из-за преобразований в строку пойвляются лишние скобки
         List<String> list = Arrays.asList(stringIds.split(","));
         User user = userRepository.findBySecureKod(secureKod);
         if (user==null){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        orderService.addToOrder(secureKod,list,orderId,totalMoney);
+        orderService.addToOrder(secureKod,list,orderId,totalMoney, pickUpPoint);
         /*Order order;
         for (String id:list1){
             order = new Order();
