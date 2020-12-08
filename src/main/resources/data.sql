@@ -14,18 +14,13 @@ INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUE
 INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (10,'7.jpg','Souvenirs',1200,'Худи','Черное худи','2016-11-08 20:44:44');
 INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (11,'22.jpg','Souvenirs',1000,'Комплект ручек','Комплект из 2-х ручек','2016-11-08 13:44:44');
 
-INSERT INTO orders (id,user_id,order_id,data_of_order,status) VALUES (1,1,12323123,1602944662186,'Не доставлено');
-INSERT INTO orders (id,user_id,order_id,data_of_order,status) VALUES (2,2,123231231,1602944662186,'Не доставлено');
-
-INSERT INTO order_2_product (id,order_id,product_id) VALUES (1,"12323123",2);
-INSERT INTO order_2_product (id,order_id,product_id) VALUES (2,"12323123",1);
-INSERT INTO order_2_product (id,order_id,product_id) VALUES (3,"12323123",3);
-INSERT INTO order_2_product (id,order_id,product_id) VALUES (4,"12323123",5);
-
 INSERT INTO images (id,product_id,image_name) VALUES (1,1,"1.jpg");
 INSERT INTO images (id,product_id,image_name) VALUES (2,1,"1.jpg");
 INSERT INTO images (id,product_id,image_name) VALUES (3,1,"1.jpg");
 
+INSERT INTO pick_up_point (id,pick_up_point) VALUES (1,"Улица Евгения Коцабенко");
+INSERT INTO pick_up_point (id,pick_up_point) VALUES (2,"Улица Пашмена");
+INSERT INTO pick_up_point (id,pick_up_point) VALUES (3,"Улица Турниковая");
 
 INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (12,'5.jpg','Souvenirs',1234200,'Футболка Юфу','Футболка Юфу','2015-11-08 10:48:44');
 INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (13,'16.jpg','Souvenirs',9002,'Флешка ЮФУ ясень','Флешка из массива ясеня','2011-11-02 12:44:44');

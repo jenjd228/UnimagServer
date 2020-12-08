@@ -15,10 +15,10 @@ import java.util.AbstractMap;
 public class CatalogController {
 
     @Autowired
-    CatalogRepository catalogRepository;
+    private CatalogRepository catalogRepository;
 
     @Autowired
-    CatalogService catalogService;
+    private CatalogService catalogService;
 
     @GetMapping("getCatalogSize")
     public ResponseEntity getCatalogSize(){

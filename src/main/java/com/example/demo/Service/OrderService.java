@@ -1,6 +1,5 @@
 package com.example.demo.Service;
 
-import com.example.demo.Bonus;
 import com.example.demo.Model.Order2Product;
 import com.example.demo.Model.Orders;
 import com.example.demo.Model.User;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +56,7 @@ public class OrderService {
                order2ProductList.add(order2Product);
            }
 
-           if (order2ProductList.size() != 0){
+           if (order2ProductList.size() != 0){ //Может быть ошибка Duplicate entry '1790251900' for key 'orders.UK_hmsk25beh6atojvle1xuymjj0'
                ordersRepository.save(order);
                //userRepository.save(user);
                order2ProductRepository.saveAll(order2ProductList);

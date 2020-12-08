@@ -21,10 +21,10 @@ import java.util.UUID;
 public class UserService {
 
     @Autowired
-    ModelMapper modelMapper2;
+    private ModelMapper modelMapper2;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public String checkBySecureKod(String secureKod) {
         User user = userRepository.findBySecureKod(secureKod);
@@ -51,7 +51,9 @@ public class UserService {
     }
 
     public AbstractMap.SimpleEntry<String, UserDTO> getUser(String secureKod){
-        User user = userRepository.findBySecureKod(secureKod);
+        User user = userRepository.findBySecureKod(secureKod.trim());
+        System.out.println(userRepository.findByEmail("ya.kocaba@gmail.com"));
+        System.out.println(user);
         if (user==null){
             return new AbstractMap.SimpleEntry<>("ERROR", null);
         }else {

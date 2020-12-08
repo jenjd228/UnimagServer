@@ -1,18 +1,14 @@
 package com.example.demo.DTO;
 
-import com.example.demo.Model.Order2Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.jni.Local;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
-import java.time.*;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 @Data
 @NoArgsConstructor
@@ -25,7 +21,7 @@ public class OrdersDTO {
 
     private String status;
 
-    private String pickUpPoint; //Пункт выдачи
+    private String pickUpPoint;
 
     private List<Order2ProductDTO> order2ProductsList;
 
