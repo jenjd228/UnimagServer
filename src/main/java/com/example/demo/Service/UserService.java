@@ -52,8 +52,7 @@ public class UserService {
 
     public AbstractMap.SimpleEntry<String, UserDTO> getUser(String secureKod){
         User user = userRepository.findBySecureKod(secureKod.trim());
-        System.out.println(userRepository.findByEmail("ya.kocaba@gmail.com"));
-        System.out.println(user);
+
         if (user==null){
             return new AbstractMap.SimpleEntry<>("ERROR", null);
         }else {
