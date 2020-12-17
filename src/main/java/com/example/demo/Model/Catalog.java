@@ -1,7 +1,6 @@
 package com.example.demo.Model;
 
 
-import com.example.demo.DTO.ImageDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

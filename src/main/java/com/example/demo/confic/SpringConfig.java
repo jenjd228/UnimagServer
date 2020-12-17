@@ -2,10 +2,8 @@ package com.example.demo.confic;
 
 import com.example.demo.DTO.BasketProductDTO;
 import com.example.demo.DTO.CatalogDTO;
-import com.example.demo.DTO.ImageDTO;
 import com.example.demo.DTO.OrdersDTO;
 import com.example.demo.Model.Catalog;
-import com.example.demo.Model.Image;
 import com.example.demo.Model.Orders;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
