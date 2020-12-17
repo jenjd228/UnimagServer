@@ -17,7 +17,6 @@
 
 	<properties>
 		<java.version>15.0.1</java.version>
-		<maven.compiler.release>8</maven.compiler.release>
 	</properties>
 
 	<dependencies>
