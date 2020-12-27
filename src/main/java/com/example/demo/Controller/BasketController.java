@@ -40,7 +40,7 @@ public class BasketController {
         if (size.equals("null")) {
             serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, null);
         } else {
-            serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, Integer.valueOf(size));
+            serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, size);
         }
         switch (serviceResponse){
             case "OK": return new ResponseEntity("OK",HttpStatus.OK);

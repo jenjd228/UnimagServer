@@ -2,41 +2,42 @@ package com.example.demo.Service;
 
 import com.example.demo.DTO.BasketProductDTO;
 import com.example.demo.Model.BasketProduct;
-import com.example.demo.Model.Catalog;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.BasketRepository;
-import com.example.demo.Repository.CatalogRepository;
 import com.example.demo.Repository.UserRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BasketService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final BasketRepository basketRepository;
 
-    @Autowired
-    private BasketRepository basketRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private CatalogRepository catalogRepository;
+    @Qualifier("modelMapperToBasketProductDTO")
+    private final ModelMapper modelMapperToBasketProductDTO;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    BasketService(BasketRepository basketRepository, UserRepository userRepository, ModelMapper modelMapperToBasketProductDTO) {
+        this.basketRepository = basketRepository;
+        this.userRepository = userRepository;
+        this.modelMapperToBasketProductDTO = modelMapperToBasketProductDTO;
+    }
 
-    public AbstractMap.SimpleEntry<String, Object[]> getBasketList(String secureKod){
+    public AbstractMap.SimpleEntry<String, Object[]> getBasketList(String secureKod) {
         User user = userRepository.findBySecureKod(secureKod);
-        if (user==null){
+        if (user == null) {
             return new AbstractMap.SimpleEntry<>("USER_NOT_FOUND", new Object[0]);
         }
 
         List<BasketProduct> list = user.getBasketProducts();
-        if (list.size() != 0){
+        if (list.size() != 0) {
             Object[] list3 = Objects.requireNonNull(list).stream().map(this::convertToDto).toArray();
             return new AbstractMap.SimpleEntry<>("OK", list3);
         }
@@ -44,7 +45,7 @@ public class BasketService {
     }
 
     private BasketProductDTO convertToDto(BasketProduct product) {
-        BasketProductDTO basketProductDTO = Objects.isNull(product.getCatalogProduct()) ? null : modelMapper.map(product.getCatalogProduct(), BasketProductDTO.class);
+        BasketProductDTO basketProductDTO = Objects.isNull(product.getCatalogProduct()) ? null : modelMapperToBasketProductDTO.map(product.getCatalogProduct(), BasketProductDTO.class);
         basketProductDTO.setCount(product);
         basketProductDTO.setColor(product.getColor());
         basketProductDTO.setSize(product.getSize());
@@ -52,17 +53,15 @@ public class BasketService {
     }
 
     @Transactional
-    public String deleteProductFromBasket(String secureKod, Integer productId){
+    public String deleteProductFromBasket(String secureKod, Integer productId) {
         User user = userRepository.findBySecureKod(secureKod);
-        if (user==null){
+        if (user == null) {
             return "USER_NOT_FOUND";
         }
-        System.out.println("Мы тут");
         List<BasketProduct> list = user.getBasketProducts();
-        if (list!=null){
-            for (BasketProduct basketProduct:list){
-                if (basketProduct.getProductId().equals(productId)){
-                    System.out.println(basketProduct.getId());
+        if (list != null) {
+            for (BasketProduct basketProduct : list) {
+                if (basketProduct.getProductId().equals(productId)) {
                     basketRepository.deleteById(basketProduct.getId());
                     break;
                 }
@@ -72,47 +71,41 @@ public class BasketService {
         return "PRODUCT_NOT_FOUND";
     }
 
-    public String addToBasket(String secureKod,Integer id, String color, Integer size){
+    public String addToBasket(String secureKod, Integer productId, String color, String size) {
         User user = userRepository.findBySecureKod(secureKod);
-        if (user!=null) {
-            List<BasketProduct> product = basketRepository.findByIdInUserBasket(user.getId(), id);
-            //Если такого товара раньше не было
-            if (product.size() == 0) {
-                BasketProduct basketProduct = new BasketProduct();
-                basketProduct.setUserId(user.getId());
-                basketProduct.setProductId(id);
-                basketProduct.setCount(1);
-                basketProduct.setColor(color);
-                basketProduct.setSize(size);
-                basketRepository.save(basketProduct);
-                return "OK";
-            } else {
-                for (int i = 0; i < product.size(); i++) {
-                    //Если товар имеет другой цвет/размер, ТО добавить его в корзину
-                    if (!product.get(i).getColor().equals(color) || product.get(i).getSize() != size) {
-                        BasketProduct basketProduct = new BasketProduct();
-                        basketProduct.setUserId(user.getId());
-                        basketProduct.setProductId(id);
-                        basketProduct.setCount(1);
-                        basketProduct.setColor(color);
-                        basketProduct.setSize(size);
-                        basketRepository.save(basketProduct);
-                        return "OK";
+        if (user != null) {
+
+            List<BasketProduct> products = user.getBasketProducts();
+            BasketProduct currentBasketProduct = basketProductCreate(user.getId(),productId,color,size);
+
+            if (products.size() != 0) {
+                    if (products.contains(currentBasketProduct)) {
+                        return "PRODUCT_IS_PRESENT";
                     }
-                    return "PRODUCT_IS_PRESENT";
-                }
             }
+            basketRepository.save(currentBasketProduct);
+            return "OK";
         }
         return "USER_NOT_FOUND";
     }
 
-    public String deleteOneProductFromBasket(String secureKod,String id){
+    private BasketProduct basketProductCreate(Integer userId,Integer productId,String color,String size){
+        BasketProduct basketProduct = new BasketProduct();
+        basketProduct.setUserId(userId);
+        basketProduct.setProductId(productId);
+        basketProduct.setCount(1);
+        basketProduct.setColor(color);
+        basketProduct.setSize(size);
+        return basketProduct;
+    }
+
+    public String deleteOneProductFromBasket(String secureKod, String id) {
         User user = userRepository.findBySecureKod(secureKod);
-        if (user!=null){
+        if (user != null) {
             List<BasketProduct> basketProduct1 = user.getBasketProducts();
-            for (BasketProduct basketProduct:basketProduct1){
-                if (basketProduct.getProductId().toString().equals(id)){
-                    basketProduct.setCount(basketProduct.getCount()-1);
+            for (BasketProduct basketProduct : basketProduct1) {
+                if (basketProduct.getProductId().toString().equals(id)) {
+                    basketProduct.setCount(basketProduct.getCount() - 1);
                     basketRepository.save(basketProduct);
                     break;
                 }
@@ -122,13 +115,13 @@ public class BasketService {
         return "USER_NOT_FOUND";
     }
 
-    public String addOneProductToBasket(String secureKod,String id){
+    public String addOneProductToBasket(String secureKod, String id) {
         User user = userRepository.findBySecureKod(secureKod);
-        if (user!=null){
+        if (user != null) {
             List<BasketProduct> basketProduct1 = user.getBasketProducts();
-            for (BasketProduct basketProduct:basketProduct1){
-                if (basketProduct.getProductId().toString().equals(id)){
-                    basketProduct.setCount(basketProduct.getCount()+1);
+            for (BasketProduct basketProduct : basketProduct1) {
+                if (basketProduct.getProductId().toString().equals(id)) {
+                    basketProduct.setCount(basketProduct.getCount() + 1);
                     basketRepository.save(basketProduct);
                     break;
                 }

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Data
@@ -31,9 +30,5 @@ public class Orders implements Serializable {
     private String pickUpPoint;
 
     private String status;
-
-    @OneToMany
-    @JoinColumn(name = "order_id", referencedColumnName = "order_id",insertable=false, updatable=false)
-    private List<Order2Product> order2ProductsList;
 
 }

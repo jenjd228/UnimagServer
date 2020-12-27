@@ -18,4 +18,6 @@ public class PayDTO {
     private String title;
 
     private Integer count;
+
+    private String size;
 }

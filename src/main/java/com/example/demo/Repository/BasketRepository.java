@@ -1,7 +1,6 @@
 package com.example.demo.Repository;
 
 import com.example.demo.Model.BasketProduct;
-import org.hibernate.annotations.Cascade;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

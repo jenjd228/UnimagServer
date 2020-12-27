@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,8 +21,6 @@ public class OrdersDTO {
     private String status;
 
     private String pickUpPoint;
-
-    private List<Order2ProductDTO> order2ProductsList;
 
     public void setLocalDate(Long time){
         this.dataOfOrder = ZonedDateTime.ofInstant(Instant.ofEpochMilli(time),ZoneId.of("UTC"))

@@ -24,4 +24,8 @@ public class Order2Product implements Serializable {
     @Column(name = "product_id")
     private Integer productId;
 
+    private Integer count;
+
+    private String size;
+
 }
