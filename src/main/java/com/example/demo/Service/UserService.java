@@ -40,7 +40,7 @@ public class UserService {
         }
     }
 
-    public String firstUpdate(String email, String password) throws NoSuchAlgorithmException {
+    public String firstUpdate(String email, String password, String fio, String birthData) throws NoSuchAlgorithmException {
         User userFromBD = userRepository.findByEmail(email);
         if (userFromBD != null) {
             return "yes";
@@ -62,21 +62,13 @@ public class UserService {
         user.setSecureKod(hex);
         user.setFio("Отредактируйте профиль");
         user.setBirthday("Отредактируйте профиль");
+        user.setFio(fio);
+        user.setBirthday(birthData);
 
         userRepository.save(user);
         return hex;
     }
 
-    public String userUpdate(String email, String fio, String birthData) {
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            user.setFio(fio);
-            user.setBirthday(birthData);
-            userRepository.save(user);
-            return "OK";
-        }
-        return "USER_NOT_FOUND";
-    }
 
     public String checkByData(String email, String password) throws NoSuchAlgorithmException {
         User user = userRepository.findByEmail(email);

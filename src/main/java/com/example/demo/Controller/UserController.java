@@ -43,19 +43,11 @@ public class UserController {
     }
 
     @PostMapping("firstUpdate")
-    public ResponseEntity firstUpdate(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        String serviceResponse = userService.firstUpdate(email,password);
+    public ResponseEntity firstUpdate(@RequestParam String email, @RequestParam String password, @RequestParam String fio, @RequestParam String birthData) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        String serviceResponse = userService.firstUpdate(email,password, fio, birthData);
         return new ResponseEntity(serviceResponse,HttpStatus.OK);
     }
-
-    @PostMapping("userUpdate")
-    public ResponseEntity userUpdate(@RequestParam String email,@RequestParam String fio,@RequestParam String birthData) {
-        String serviceResponse = userService.userUpdate(email,fio,birthData);
-        if (serviceResponse.equals("OK")){
-            return new ResponseEntity("OK",HttpStatus.OK);
-        }
-        return new ResponseEntity("Error!",HttpStatus.NOT_FOUND);
-    }
+    
 
     @PostMapping("checkByData")
     public ResponseEntity checkByData(@RequestParam String email,@RequestParam String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
