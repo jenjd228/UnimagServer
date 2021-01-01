@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.AbstractMap;
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -96,6 +94,20 @@ public class UserService {
             return "LOCKED";
         }
         return "NOT_FOUND";
+    }
+
+    public String userUpdate(String fio,String secureKod){
+        User user = userRepository.findBySecureKod(secureKod);
+
+        if (user == null){
+            return "USER_NOT_FOUND";
+        }
+
+        user.setFio(fio);
+
+        userRepository.save(user);
+
+        return "OK";
     }
 
 
