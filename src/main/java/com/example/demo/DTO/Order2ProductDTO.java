@@ -23,15 +23,6 @@ public class Order2ProductDTO {
 
     private String title;
 
-    /*"{" +
-            "\"productId\":" + productId +
-            ",\"imageName\":\"" + imageName + '\"' +
-            ",\"price\":" + price +
-            ",\"title\":\"" + title + '\"' +
-            ",\"count\":" + count +
-            ",\"size\":\"" + size + '\"' +
-            '}';*/
-
     @Override
     public String toString() {
         return "{" +

@@ -29,7 +29,7 @@ public class BasketController {
         String serviceResponse = basketService.deleteProductFromBasket(secureKod,productId);
         switch (serviceResponse){
             case "OK": return new ResponseEntity("ok",HttpStatus.OK);
-            case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.BAD_REQUEST);
+            case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.NOT_FOUND);
             default: return new ResponseEntity("PRODUCT_NOT_FOUND",HttpStatus.NOT_FOUND);
         }
     }
@@ -44,8 +44,8 @@ public class BasketController {
         }
         switch (serviceResponse){
             case "OK": return new ResponseEntity("OK",HttpStatus.OK);
-            case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.BAD_REQUEST);
-            case "PRODUCT_IS_PRESENT" : return new ResponseEntity("PRODUCT_IS_PRESENT",HttpStatus.BAD_REQUEST);
+            case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.NOT_FOUND);
+            case "PRODUCT_IS_PRESENT" : return new ResponseEntity("PRODUCT_IS_PRESENT",HttpStatus.OK);
             default: return new ResponseEntity("PRODUCT_NOT_FOUND",HttpStatus.NOT_FOUND);
         }
     }
@@ -56,7 +56,7 @@ public class BasketController {
         if ("OK".equals(serviceResponse)) {
             return new ResponseEntity("ok", HttpStatus.OK);
         }
-        return new ResponseEntity("USER_NOT_FOUND", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("USER_NOT_FOUND", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("addOneProductToBasket")

@@ -5,14 +5,20 @@ import com.example.demo.Model.Catalog;
 import com.example.demo.Repository.CatalogRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.net.InetAddress;
 import java.util.AbstractMap;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 public class CatalogService {
+
+    @Value("${server.port}")
+    private String port;
 
     private final CatalogRepository catalogRepository;
 
@@ -27,8 +33,6 @@ public class CatalogService {
     public AbstractMap.SimpleEntry<String, Object[]> getList(Integer currentNumberList, String category, String price, String whereFlag) {
         PageRequest pageable = PageRequest.of(currentNumberList, 6);
         Object[] list;
-
-        //System.out.println(currentNumberList+"\n"+category+"\n"+price+"\n"+whereFlag);
 
         long productCount = catalogRepository.count();
         int countGroup = (int) ((productCount / 6) + 1);//например 100/8 = 12.5 значит всего 13 групп
@@ -60,4 +64,12 @@ public class CatalogService {
     private CatalogDTO convertToCatalogDto(Catalog product) {
         return Objects.isNull(product) ? null : modelMapperForCatalogDTO.map(product, CatalogDTO.class);
     }
+
+    public List<Catalog> getCatalogsByRegex(String regex) {
+        List<Catalog> list = catalogRepository.findCatalogByTitleContaining(regex);
+        //list.forEach(t -> t.setImageName("http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + port + "/upload/" + t.getImageName()));
+        return list;
+    }
+
+
 }

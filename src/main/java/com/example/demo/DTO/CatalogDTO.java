@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -25,20 +27,21 @@ public class CatalogDTO {
 
     private String descriptions;
 
-    private LocalDateTime date;
+    private Long date;
 
     private String listImage;
 
-    public void setListImageDTO(List<Image> listImage){
+    public void setListImageDTO(Set<Image> listImage){
+        List<Image> list = (ArrayList) listImage;
         StringBuilder stringBuilder = new StringBuilder();
-        for (Image image : listImage){
-            stringBuilder.append(image.getImageName());
-            if (listImage.size()-1 != listImage.indexOf(image)){
+        for (Image image : list){
+            stringBuilder.append(image.getKey().getImageName());
+            if (listImage.size()-1 != list.indexOf(image)){
                 stringBuilder.append(",");
             }
         }
         if (stringBuilder.length() == 0){
-            this.listImage = " ";
+            this.listImage = "";
         }else {
             this.listImage = stringBuilder.toString();
         }

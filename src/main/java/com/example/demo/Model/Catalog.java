@@ -4,10 +4,13 @@ package com.example.demo.Model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,10 +19,12 @@ import java.util.List;
 public class Catalog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String imageName;
+    private String hash;
+
+    private String mainImage;
 
     private String category;
 
@@ -27,12 +32,14 @@ public class Catalog {
 
     private String title;
 
+    @Lob
     private String descriptions;
 
-    private LocalDateTime date;
+    private Long date;
 
-    @OneToMany()
-    @JoinColumn(name = "product_id", referencedColumnName = "id",insertable=false, updatable=false)
-    private List<Image> listImage;
+    @OneToMany(cascade={CascadeType.MERGE})
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "product_id", referencedColumnName = "id", insertable = false, updatable = false, nullable = false)
+    private Set<Image> listImage;
 
 }

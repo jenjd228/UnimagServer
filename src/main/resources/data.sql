@@ -1,29 +1,34 @@
+INSERT INTO user (id,birthday,email,fio,max_date,password,points,registration_date,secure_kod,university) VALUES (1,'15.03.2002','e','User',123456,'345',1234,1234456,'wertyu',null);
+
 INSERT INTO partner (id,image_name,title,description,price) VALUES (1,'nike.png','Nike','Скидка 10% на первую покупку\n(Акция действет ежемесячно)',200);
 INSERT INTO partner (id,image_name,title,description,price) VALUES (2,'adidas.png','Adidas','Верните до 15% при покупке от 3000 рублей\nАкция дейстительна до 27.09.2020',150);
 INSERT INTO partner (id,image_name,title,description,price) VALUES (3,'red_bull.png','Red Bull','Скидка 5%\nПри подписке на срок более 3х месяцев скидка 8% на любую покупку',250);
 
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (1,'1.jpg','Clothes',1600,'Свитшот','Свитшот утепленный','2016-11-09 11:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (2,'q.jpg','Clothes',1700,'Худи утепленное','Толстовка (худи), утепленное, цвет синий.','2016-11-09 10:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (3,'6.jpg','Clothes',1500,'Толстовка женская','Толстовка женская. Материал: 92%-хлопок, 8%-лайкра','2016-10-09 14:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (4,'4.jpg','Clothes',1500,'Толстовка женская','Толстовка женская на молнии. Материал: 92%-хлопок, 8%-лайкра','2017-11-09 11:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (5,'29.jpg','Souvenirs',1200,'Часы ЮФУ ясень','Часы изготовлены из массива ясеня','2016-11-07 11:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (6,'18.jpg','Souvenirs',500,'Кружка керамическая','Кружка керамическая','2016-11-08 12:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (7,'5.jpg','Souvenirs',1200,'Футболка Юфу','Футболка Юфу','2016-11-08 10:48:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (8,'16.jpg','Souvenirs',900,'Флешка ЮФУ ясень','Флешка из массива ясеня','2016-11-02 12:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (9,'27.jpg','Souvenirs',300,'Блокнот Юфу','Блокнот Юфу','2016-11-08 17:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (10,'7.jpg','Souvenirs',1200,'Худи','Черное худи','2016-11-08 20:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (11,'22.jpg','Souvenirs',1000,'Комплект ручек','Комплект из 2-х ручек','2016-11-08 13:44:44');
+INSERT INTO pick_up_point (id,pick_up_point) VALUES (1,'Улица Евгения Коцабенко');
+INSERT INTO pick_up_point (id,pick_up_point) VALUES (2,'Улица Пашмена');
+INSERT INTO pick_up_point (id,pick_up_point) VALUES (3,'Улица Турниковая');
 
-INSERT INTO images (id,product_id,image_name) VALUES (1,1,"1.jpg");
-INSERT INTO images (id,product_id,image_name) VALUES (2,1,"1.jpg");
-INSERT INTO images (id,product_id,image_name) VALUES (3,1,"1.jpg");
+INSERT INTO catalog (id,hash,category,date,descriptions,main_image,price,title) VALUES
+(1,'hashe4gerge4','Souvenirs',NOW(),'Красивый блокнот - залог успеха любого студента. А если он выполнен еще и в деревянном стиле - то тогда друзья точно оценят Ваш вкус. Задумайтесь над этим','https://docs.google.com/uc?id=1DTJvR7GrZziGlgsB1sPcvzMDjReosXsj',500,'Блокнот ЮФУ с деревянной обложкой'),
+(2,'hashe4gerge5','Clothes',NOW(),'Вы мечтали когда-нибудь об универсальной одежде, в которой можно выйти и в город, и в университет? Тогда это теплое синее худи точно осуществит вашу мечту! Сшитое из специальных тканей, оно будет легко прилегать к вашему телу, не досталяя ни малейшего дискомфорта. А универсальный дизайн точно выделит вас среди других студентов. Успейтие приобрести!','https://docs.google.com/uc?id=1XA_04gUUX2F_MGFwCSiuj07gffw5hAMd',1600,'Синее худи'),
+(3,'hashe4gergef','Souvenirs',NOW(),'Магнитик на холодильнике - это часто кусочек истории вашей жизни, глядя на который погружаешься в теплые воспоминания. Так подарите себе и своим близким такые незабываемые воспоминания!','https://docs.google.com/uc?id=1yBfjOmEanPhJ6VrcEOzCjbfw0q8Cp2YN',200,'Магнит с главным корпусом'),
+(4,'hashe4getge5','Clothes',NOW(),'Этот лонгслив будет смотреться прекрасно везде, где бы Вы не находились: на лекциях в университете, на соревнованиях по дартсу или же просто на улице. Приобретая такой лонгслив, Вы приобретает не просто элемент одежды в свой гардероб -  Вы приобретаете уникальную возможность выделить себя в толпе студентов!','https://docs.google.com/uc?id=1Eildzzx7aPAOog_LbxurjibeOXcUsPlJ',1200,'Черный лонгслив'),
+(5,'hasss4gerge5','Souvenirs',NOW(),'Что может быть лучше запаха кофе по утрам? Только запах кофе из кружки с логотипом Южного Федерального Университета! Не упустите возможность встретить следующее утро в объятях новой атмосферы, создаваемой данной кружкой!','https://docs.google.com/uc?id=1KTfJMxTB5k32cQivlSsa0sNiZo56qY37',600,'Красная кружка с логотипом ЮФУ');
 
-INSERT INTO pick_up_point (id,pick_up_point) VALUES (1,"Улица Евгения Коцабенко");
-INSERT INTO pick_up_point (id,pick_up_point) VALUES (2,"Улица Пашмена");
-INSERT INTO pick_up_point (id,pick_up_point) VALUES (3,"Улица Турниковая");
-
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (12,'5.jpg','Souvenirs',1234200,'Футболка Юфу','Футболка Юфу','2015-11-08 10:48:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (13,'16.jpg','Souvenirs',9002,'Флешка ЮФУ ясень','Флешка из массива ясеня','2011-11-02 12:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (14,'27.jpg','Souvenirs',3003,'Блокнот Юфу','Блокнот Юфу','2013-11-08 17:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (15,'7.jpg','Souvenirs',100,'Худи','Черное худи','2016-09-08 20:44:44');
-INSERT INTO catalog (id,image_name,category,price,title,descriptions,date) VALUES (16,'22.jpg','Souvenirs',13000,'Комплект ручек','Комплект из 2-х ручек','2010-11-08 13:44:44');
+INSERT INTO images (product_id,image_name) VALUES
+(1,'https://docs.google.com/uc?id=1DTJvR7GrZziGlgsB1sPcvzMDjReosXsj'),
+(1,'https://docs.google.com/uc?id=1-wpe2iCO7Cpnizig7VJQrzp-fmBOgknJ'),
+(1,'https://docs.google.com/uc?id=1K8bEFZHlRV52mhCdDVTwLv3E6hgeR5M1'),
+(1,'https://docs.google.com/uc?id=1IygGGMVALl1r2cBqPH_zzfitlo7jH_d6'),
+(2,'https://docs.google.com/uc?id=1XA_04gUUX2F_MGFwCSiuj07gffw5hAMd'),
+(2,'https://docs.google.com/uc?id=1S0Yel35eItz3pYrQKj8h9nxZHvvWzy68'),
+(2,'https://docs.google.com/uc?id=1eAnF1so0NQW6CwWiJ_t7kehU8YCWhl45'),
+(3,'https://docs.google.com/uc?id=1yBfjOmEanPhJ6VrcEOzCjbfw0q8Cp2YN'),
+(3,'https://docs.google.com/uc?id=1IfXMzbHM1zVnKOTMjBVdVzC89-dQ_gLZ'),
+(3,'https://docs.google.com/uc?id=1hUSjh_Y9WyErY7RRPXZ4HQTKHqQ-mjlZ'),
+(4,'https://docs.google.com/uc?id=1Eildzzx7aPAOog_LbxurjibeOXcUsPlJ'),
+(4,'https://docs.google.com/uc?id=1R53pDPIgEZxGIrNJ-WOOOl3uElaUQkLB'),
+(4,'https://docs.google.com/uc?id=1BvhdDpUTrgLIOUm01FqJJwvEouViHJLl'),
+(5,'https://docs.google.com/uc?id=1KTfJMxTB5k32cQivlSsa0sNiZo56qY37'),
+(5,'https://docs.google.com/uc?id=1MR8CXxehdtzKuTnNJx4E3zOK_eh03d_6'),
+(5,'https://docs.google.com/uc?id=1lJKHqCaXKyiiHaAPg3ZbThlIXaUK0Ifr');

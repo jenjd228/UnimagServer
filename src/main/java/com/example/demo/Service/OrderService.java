@@ -67,8 +67,6 @@ public class OrderService {
 
 
         if (user != null) {
-            //Integer bonus = Bonus.countBonus(Integer.parseInt(totalMoney));
-            //user.addPoints(bonus);
 
             //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             //String text = LocalDateTime.now().format(formatter);
@@ -102,7 +100,6 @@ public class OrderService {
     public Object[] getOrdersList(String secureKod) {
         User user = userRepository.findBySecureKod(secureKod);
 
-        //System.out.println(Arrays.toString(order2productRepository.findBy().toArray()));
         if (user != null) {
             return Objects.requireNonNull(user.getOrdersList()).stream().map(this::convertToOrdersDto).toArray();
         }

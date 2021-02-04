@@ -1,0 +1,144 @@
+<!-- Фрейм изменения товара -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script>
+        function del(id, tdId) {
+            var stringId = id.toString();
+            var divId = 'div' + stringId.substring(stringId.length - 1)
+
+            if (document.getElementById(divId) == null) {
+                var div = document.createElement('div');
+                div.id = divId
+
+                div.innerHTML = '<br>Удалено<br>';
+
+                document.getElementById(tdId).appendChild(div);
+            }
+            document.getElementById(id).setAttribute('value', 'true')
+            return false;
+        }
+
+        function canceling(id) {
+            var stringId = id.toString();
+            var divId = 'div' + stringId.substring(stringId.length - 1)
+            if (document.getElementById(divId) != null) {
+                document.getElementById(divId).remove()
+            }
+            document.getElementById(id).setAttribute('value', 'false')
+        }
+
+        function addTrToTable() {
+            var tr = document.createElement('tr');
+            var newElementId = document.getElementsByClassName('trProduct').length
+            tr.className = "trProduct";
+            tr.innerHTML =
+                '            <th align="right">Путь до фото товара:</th>\n' +
+                '            <td align="left"><input type="text" value="" id="imagePaths' + newElementId + '.image.key.imageName" name="imagePaths[' + newElementId + '].image.key.imageName">\n' +
+                '                <input type="hidden" id="imagePaths' + newElementId + '.image.key.productId" name="imagePaths[' + newElementId + '].image.key.productId" value="1">\n' +
+                '                <input id="deleteInput' + newElementId + '" type="hidden" name="imagePaths[' + newElementId + '].delete" value="false"></td>\n' +
+                '            <td id="currentTd' + newElementId + '">\n' +
+                '                <input onclick="del(\'' + 'deleteInput' + newElementId + '\',\'' + 'currentTd' + newElementId + '\');" type="button" class="button_choice" value="Удалить фото">\n' +
+                '                <input onclick="canceling(\'' + 'deleteInput' + newElementId + '\');" type="button" class="button_choice" value="Отмена">\n' +
+                '            </td>\n' +
+                '            <td>\n' +
+                '                <img width="150px" height="150px" src="" alt=""/>\n' +
+                '            </td>';
+            document.getElementById("mainTableBody").appendChild(tr);
+        }
+    </script>
+</head>
+<body>
+
+<h1>Изменить товар</h1>
+
+<form method="get" th:action="@{/searchByHash}">
+    <input class="regex_item" type="text" placeholder="Введите hash товара" th:name="hash">
+    <input class="regex_item" type="submit" value="Поиск">
+</form>
+<div th:if="${product.imagePaths ne null}" th:object="${product}">
+    <form method="post" th:action="@{/updateProduct}">
+        <input type="hidden" th:field="*{hash}">
+        <table id="mainTable" border="1" width="100%">
+            <tbody id="mainTableBody">
+            <tr>
+                <th width="15%" align="right">Категория товара:</th>
+                <td width="85%" align="left">
+                    <select id="category" name="category">
+                        <option th:each="category : ${categories}"
+                                th:value="${category.getValue().nameEn}"
+                                th:text="${category.getValue().nameRu}"
+                                th:selected="${category.getValue().isSelected}"></option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <th width="15%" align="right">Имя товара:</th>
+                <td width="85%" align="left"><input type="text" th:field="*{title}"></td>
+            </tr>
+
+            <tr>
+                <th width="15%" align="right">Цена товара:</th>
+                <td width="85%" align="left"><input type="text" th:field="*{price}"></td>
+            </tr>
+
+            <tr>
+                <th width="15%" align="right">Описание товара:</th>
+                <td width="85%" align="left"><textarea type="text" cols="100" rows="4"
+                                                       th:field="*{descriptions}"></textarea></td>
+            </tr>
+
+            <tr>
+                <th width="15%" align="right">Путь до главного фото товара:</th>
+                <td width="85%" align="left"><input type="text" th:field="*{mainImage}"></td>
+                <td>
+                    <img width="150px" height="150px" th:src="@{${product.getMainImage()}}" alt=""/>
+                </td>
+            </tr>
+
+            <tr class="trProduct" th:each="productImage, stat : ${product.imagePaths}">
+                <th align="right">Путь до фото товара:</th>
+                <td align="left"><input type="text" th:value="${productImage.getImage().getKey().getImageName()}"
+                                        th:field="*{imagePaths[__${stat.index}__].image.key.imageName}">
+                    <input type="hidden" th:field="*{imagePaths[__${stat.index}__].image.key.productId}">
+                    <input th:id="deleteInput+${stat.index}" type="hidden"
+                           th:field="*{imagePaths[__${stat.index}__].delete}"></td>
+                <td th:id="currentTd+${stat.index}">
+                    <input th:onclick="'del(\'' + deleteInput+${stat.index} + '\', \'' + currentTd+${stat.index} + '\');'"
+                           type="button" class="button_choice" value="Удалить фото">
+                    <input th:onclick="'canceling(\'' + deleteInput+${stat.index} + '\');'" type="button"
+                           class="button_choice" value="Отмена">
+                </td>
+                <td>
+                    <img width="150px" height="150px" th:src="@{${productImage.getImage().getKey().getImageName()}}"
+                         alt=""/>
+                </td>
+                <!--<td width="85%" align="left"><input type="file" th:field="*{file}"></td>--->
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="text_box" style="	width:100%; display:block; float:none; margin-top:1vh;">
+            <input type="submit" class="button_choice" value="Изменить товар">
+            <input onclick="addTrToTable();" type="button" class="button_choice" value="Добавить фото">
+        </div>
+
+        <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</p>
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
+        <p th:if="${#fields.hasErrors('descriptions')}" th:errors="*{descriptions}">Descriptions Error</p>
+        <!--<p th:text="${fileMessage}" th:if="${fileMessage ne null}" ></p>-->
+        <p th:if="${#fields.hasErrors('mainImage')}" th:errors="*{mainImage}">GoogleImagePath Error</p>
+        <p th:text="${googleImagePathErrors}" th:if="${googleImagePathErrors ne null}">googleImagePathErrors Error</p>
+        <p th:text="${searchByHashMessage}" th:if="${searchByHashMessage ne null}"></p>
+    </form>
+
+    <form id="deleteForm" method="post" th:action="@{/deleteProduct}" th:object="${delete} ">
+        <input type="hidden" th:field="*{hash}">
+        <input type="submit" class="button_choice" value="Удалить товар">
+    </form>
+</div>
+
+</body>
+
+</html>

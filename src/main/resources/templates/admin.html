@@ -1,0 +1,37 @@
+<!-- Главное меню -->
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Админ панель</title>
+	<meta charset="UTF-8">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+	<header class="main_header">Админ-панель</header>
+	
+	<main>
+	
+		<!-- Блок с кнопками выбора действий -->
+		<div id="choice_action">
+			<h2>Выбор действия</h2>
+			<input type="button" value="Добавить товар" class="button_choice" onclick="document.getElementById('main_iframe').src='/addProduct'">
+			<input type="button" value="Изменить товар" class="button_choice" onclick="document.getElementById('main_iframe').src='/updateProduct'">
+			<input type="button" value="Общая статистика" class="button_choice" onclick="document.getElementById('main_iframe').src='/mainStatistic'">
+			<input type="button" value="Статистика по товарам" class="button_choice" onclick="document.getElementById('main_iframe').src='/productStatistic'">
+			<input type="button" value="Статистика по партнерской программе" class="button_choice" onclick="document.getElementById('main_iframe').src='/partnerProgramStatistic'">
+			<input type="button" value="Поиск" class="button_choice" onclick="document.getElementById('main_iframe').src='/search'">
+		</div>
+		
+		<!-- Блок с загружаемым фреймом -->
+		<div>
+			<iframe id="main_iframe" src="/mainStatistic" frameborder="1%"></iframe>
+		</div>
+		
+	</main>
+</body>
+
+</html>

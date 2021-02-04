@@ -34,10 +34,10 @@ public class User {
     private String university;
 
     @Column(name = "registration_date")
-    private Date registrationDate;
+    private Long registrationDate;
 
     @Column(name = "max_date")
-    private Date maxDate;
+    private Long maxDate;
 
     @Column(name = "secure_kod")
     private String secureKod;

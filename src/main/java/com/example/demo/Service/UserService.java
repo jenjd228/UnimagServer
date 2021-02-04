@@ -55,8 +55,12 @@ public class UserService {
         user.setPoints(0);
         user.setEmail(email);
         user.setPassword(password);
-        user.setRegistrationDate(currentDate.getTime());
-        user.setMaxDate(calendarFrom.getTime());
+        /**
+         * Переделать в лонг с дейт
+         * user.setRegistrationDate(currentDate.getTime());
+         *         user.setMaxDate(calendarFrom.getTime());
+         */
+
         user.setSecureKod(hex);
         user.setFio("Отредактируйте профиль");
         user.setBirthday("Отредактируйте профиль");

@@ -3,13 +3,19 @@ package com.example.demo.confic;
 import com.example.demo.DTO.*;
 import com.example.demo.Model.Catalog;
 import com.example.demo.Model.Orders;
+import com.example.demo.web.model.Category;
+import com.example.demo.web.model.ProductForAddProductDTO;
+import com.example.demo.web.model.ProductForUpdateProductDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.HashMap;
+
 @Configuration
-//@ComponentScan(basePackages = "com.example.demo.Controller")
 public class SpringConfig {
 
     @Bean
@@ -57,6 +63,39 @@ public class SpringConfig {
         PropertyMap<Order2ProductInterface, Order2ProductDTO> propertyMap = new PropertyMap<>() {
             protected void configure() {
 
+            }
+        };
+        modelMapper.addMappings(propertyMap);
+
+        return modelMapper;
+    }
+
+    //WEB
+
+    @Bean
+    public ModelMapper modelMapperProductForAddProductDTOToCatalog() {
+        ModelMapper modelMapper = new ModelMapper();
+        PropertyMap<ProductForAddProductDTO, Catalog> propertyMap = new PropertyMap<>() {
+            protected void configure() {
+
+            }
+        };
+        modelMapper.addMappings(propertyMap);
+
+        return modelMapper;
+    }
+
+    @Bean
+    public ModelMapper modelMapperCatalogToProduct() {
+        ModelMapper modelMapper = new ModelMapper();
+        PropertyMap<Catalog, ProductForUpdateProductDTO> propertyMap = new PropertyMap<>() {
+            protected void configure() {
+               map().setCategory(source.getCategory());
+               map().setMainImage(source.getMainImage());
+               map().setDescriptions(source.getDescriptions());
+               map().setPrice(source.getPrice());
+               map().setTitle(source.getTitle());
+               map().setImagePathsByImageDTO(source.getListImage());
             }
         };
         modelMapper.addMappings(propertyMap);

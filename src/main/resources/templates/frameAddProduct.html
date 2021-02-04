@@ -1,0 +1,60 @@
+<!-- Фрейм добавления товара -->
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<body>
+<h1>Добавить товар</h1>
+<form method="post" enctype="multipart/form-data" th:action="@{/productCreate}" th:object="${product}">
+    <table border="1" width="100%" bgcolor="#ededed">
+        <tr>
+            <th width="15%" align="right">Категория товара:</th>
+            <td width="85%" align="left">
+                <select id="category" name="category">
+                    <option th:each="category : ${categories}" th:value="${category.getValue().nameEn}" th:text="${category.getValue().nameRu}"
+                            th:selected="${category.getValue().isSelected}"></option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th width="15%" align="right">Имя товара:</th>
+            <td width="85%" align="left"><input type="text" th:field="*{title}"></td>
+        </tr>
+
+        <tr>
+            <th width="15%" align="right">Цена товара:</th>
+            <td width="85%" align="left"><input type="text" th:field="*{price}"></td>
+        </tr>
+
+        <tr>
+            <th width="15%" align="right">Описание товара:</th>
+            <td width="85%" align="left"><textarea type="text" cols="100" rows="4"
+                                                   th:field="*{descriptions}"></textarea></td>
+        </tr>
+
+        <tr>
+            <th width="15%" align="right">Путь до фото товара:</th>
+            <td width="85%" align="left"><input type="text" th:field="*{mainImage}"></td>
+            <!--<td width="85%" align="left"><input type="file" th:field="*{file}"></td>--->
+        </tr>
+
+    </table>
+
+    <div class="text_box" style="	width:100%; display:block; float:none; margin-top:1vh;">
+        <input type="submit" class="button_choice" value="Добавить товар">
+    </div>
+
+    <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</p>
+    <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</p>
+    <p th:if="${#fields.hasErrors('descriptions')}" th:errors="*{descriptions}">Descriptions Error</p>
+    <!--<p th:text="${fileMessage}" th:if="${fileMessage ne null}" ></p>-->
+    <p th:if="${#fields.hasErrors('mainImage')}" th:errors="*{mainImage}">GoogleImagePath Error</p>
+    <p th:text="${success}" th:if="${success ne null}" ></p>
+
+</form>
+
+
+</body>
+
+</html>

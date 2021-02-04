@@ -15,11 +15,14 @@ import java.util.List;
 @RestController
 public class PartnerController {
 
-    @Autowired
-    private PartnerService partnerService;
+    private final PartnerService partnerService;
 
-    @Autowired
-    private PartnerRepository partnerRepository;
+    private final PartnerRepository partnerRepository;
+
+    PartnerController(PartnerService partnerService,PartnerRepository partnerRepository){
+        this.partnerRepository = partnerRepository;
+        this.partnerService = partnerService;
+    }
 
     @GetMapping("userIsSub/{secureKod}")
     public ResponseEntity getUser(@PathVariable String secureKod){

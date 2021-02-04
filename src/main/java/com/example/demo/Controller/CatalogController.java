@@ -14,11 +14,15 @@ import java.util.AbstractMap;
 @RestController
 public class CatalogController {
 
-    @Autowired
-    private CatalogRepository catalogRepository;
+    private final CatalogRepository catalogRepository;
 
-    @Autowired
-    private CatalogService catalogService;
+    private final CatalogService catalogService;
+
+    CatalogController (CatalogService catalogService,CatalogRepository catalogRepository){
+        this.catalogRepository = catalogRepository;
+        this.catalogService = catalogService;
+    }
+
 
     @GetMapping("getCatalogSize")
     public ResponseEntity getCatalogSize(){

@@ -1,0 +1,40 @@
+<!-- Фрейм изменения товара -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div id="regex_form">
+
+    <h1>Найти товар</h1>
+
+    <form method="get" th:action="@{/search/findProducts}">
+        <input class="regex_item" type="text" placeholder="Введите название товара" th:name="filter">
+        <input class="regex_item" type="submit" value="Поиск">
+    </form>
+
+    <table id="products">
+        <tr>
+            <th>hash</th>
+            <th>Название</th>
+            <th>Категория</th>
+            <th>Цена</th>
+            <th>Описание</th>
+            <th>Фото</th>
+        </tr>
+        <tr th:each="product : ${productList}">
+            <td th:text="${product.hash}"></td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.category}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.descriptions}"></td>
+            <td>
+                <img width="150px" height="150px" th:src="@{${product.getMainImage()}}" alt=""/>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+
+</html>
