@@ -18,7 +18,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String email;
@@ -50,12 +50,12 @@ public class User {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private List<Orders> ordersList;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    /*@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "order_2_product",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Orders> roles;
+    private Set<Orders> orders;*/
 
     public void addPoints(Integer points) {
         this.points += points;

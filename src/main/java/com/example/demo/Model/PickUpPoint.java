@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class PickUpPoint {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "pick_up_point")

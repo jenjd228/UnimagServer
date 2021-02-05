@@ -1,12 +1,12 @@
-package com.example.demo.web;
+package com.example.demo.web.wedControllers;
 
 import com.example.demo.Model.Catalog;
-import com.example.demo.Model.Image;
 import com.example.demo.Repository.CatalogRepository;
 import com.example.demo.Repository.ImagesRepository;
 import com.example.demo.managers.MyHashMapManager;
 import com.example.demo.web.customConverters.ModelConverter;
 import com.example.demo.web.model.*;
+import com.example.demo.web.service.AuthService;
 import com.example.demo.web.service.WebCatalogService;
 import org.json.JSONException;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,10 @@ public class ProductUpdateAddDeleteController {
 
     private final ImagesRepository imagesRepository;
 
-    ProductUpdateAddDeleteController(ImagesRepository imagesRepository, CatalogRepository catalogRepository, WebCatalogService webCatalogService, HashMap<Integer, Category> allCategoriesMap){
+    private final AuthService authService;
+
+    ProductUpdateAddDeleteController(AuthService authService,ImagesRepository imagesRepository, CatalogRepository catalogRepository, WebCatalogService webCatalogService, HashMap<Integer, Category> allCategoriesMap){
+        this.authService = authService;
         this.imagesRepository = imagesRepository;
         this.catalogRepository = catalogRepository;
         this.webCatalogService = webCatalogService;
@@ -40,6 +43,9 @@ public class ProductUpdateAddDeleteController {
 
     @GetMapping("/updateProduct")
     public String updateProduct(Model model){
+        if (!authService.check()){
+            return "redirect:/login";
+        }
         model.addAttribute("product",new ProductForUpdateProductDTO());
         model.addAttribute("categories",allCategoriesMap);
         return "frameUpdateProduct";
@@ -53,7 +59,7 @@ public class ProductUpdateAddDeleteController {
             return "frameUpdateProduct";
         }
         for (ImageDTO imageDTO : productForUpdateProductDTO.getImagePaths()){
-            if (imageDTO.getImage().getKey().getImageName() == null || imageDTO.getImage().getKey().getImageName().isEmpty()){
+            if (imageDTO.getImage().getKey().getImageName() == null || imageDTO.getImage().getKey().getImageName().isEmpty() || productForUpdateProductDTO.getMainImage().isEmpty()){
                 model.addAttribute("googleImagePathErrors","Пути к картинкам не должны быть пустыми");
                 return "frameUpdateProduct";
             }
@@ -77,6 +83,9 @@ public class ProductUpdateAddDeleteController {
 
     @GetMapping("/addProduct")
     public String addProduct(Model model){
+        if (!authService.check()){
+            return "redirect:/login";
+        }
         model.addAttribute("categories",allCategoriesMap);
         model.addAttribute("product",new ProductForAddProductDTO());
         return "frameAddProduct";

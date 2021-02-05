@@ -35,7 +35,7 @@ public class DefaultController {
         }
         return new ResponseEntity(orders, HttpStatus.OK);
     }
-    //@RequestParam(required = false)
+
     @GetMapping("getOrderToProductList/{secureKod}/{orderId}")
     public ResponseEntity getOrderToProductList(@PathVariable String secureKod,@PathVariable Integer orderId) {
         List<Order2ProductDTO> productDTOS = orderService.getProductListByOrderId(secureKod,orderId);

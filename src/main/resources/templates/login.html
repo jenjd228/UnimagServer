@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/login}" th:object="${authForm}" method="post">
+
+    <input type="text" th:field="*{login}">
+    <input type="text" th:field="*{password}">
+
+    <p th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Login Error</p>
+    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+    <p th:text="${errorPasswordOrLogin}" th:if="${errorPasswordOrLogin ne null}" ></p>
+
+    <div class="text_box" style="	width:100%; display:block; float:none; margin-top:1vh;">
+        <input type="submit" class="button_choice" value="Войти">
+    </div>
+
+</form>
+
+</body>
+</html>

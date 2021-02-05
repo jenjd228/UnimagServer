@@ -45,19 +45,19 @@ public class UserController {
     }
 
     @PostMapping("firstUpdate")
-    public ResponseEntity firstUpdate(@RequestParam String email, @RequestParam String password, @RequestParam String fio, @RequestParam String birthData) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ResponseEntity firstUpdate(@RequestParam String email, @RequestParam String password, @RequestParam String fio, @RequestParam String birthData) throws NoSuchAlgorithmException {
         String serviceResponse = userService.firstUpdate(email, password, fio, birthData);
         return new ResponseEntity(serviceResponse, HttpStatus.OK);
     }
 
     @PostMapping("userUpdate")
-    public ResponseEntity userUpdate(@RequestParam String fio, @RequestParam String secureKod) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ResponseEntity userUpdate(@RequestParam String fio, @RequestParam String secureKod) {
         String serviceResponse = userService.userUpdate(fio, secureKod);
         return new ResponseEntity(serviceResponse, HttpStatus.OK);
     }
 
     @PostMapping("checkByData")
-    public ResponseEntity checkByData(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ResponseEntity checkByData(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException {
         String serviceResponse = userService.checkByData(email, password);
         if (serviceResponse.equals("NOT_FOUND")) {
             return new ResponseEntity("NOT_FOUND", HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping("checkUserForLoginIn")
-    public ResponseEntity checkUserForLoginIn(@RequestParam String email, @RequestParam String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+    public ResponseEntity checkUserForLoginIn(@RequestParam String email, @RequestParam String password) {
         String serviceResponse = userService.checkUserForLoginIn(email, password);
         switch (serviceResponse) {
             case "NOT_FOUND": {

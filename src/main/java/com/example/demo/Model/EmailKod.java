@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class EmailKod {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String email;
