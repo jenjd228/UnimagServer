@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.DTO.UserDTO;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -15,8 +16,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
 
-    UserService(UserRepository userRepository) {
+    UserService(PasswordEncoder passwordEncoder,UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -43,7 +46,6 @@ public class UserService {
         if (userFromBD != null) {
             return "yes";
         }
-        Calendar currentDate = Calendar.getInstance();
         Calendar calendarFrom = Calendar.getInstance();
         calendarFrom.add(Calendar.DAY_OF_MONTH, 7);
 
@@ -54,7 +56,7 @@ public class UserService {
         User user = new User();
         user.setPoints(0);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
         /**
          * Переделать в лонг с дейт
          * user.setRegistrationDate(currentDate.getTime());
@@ -92,7 +94,7 @@ public class UserService {
     public String checkUserForLoginIn(String email, String password) {
         User user = userRepository.findByEmail(email);
         if (user != null) {
-            if (user.getPassword().equals(password)) {
+            if (passwordEncoder.matches(password,user.getPassword())) {
                 return user.getSecureKod();
             }
             return "LOCKED";

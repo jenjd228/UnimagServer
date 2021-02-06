@@ -2,7 +2,12 @@ package com.example.demo.web.service;
 
 import com.example.demo.Model.Catalog;
 import com.example.demo.Repository.CatalogRepository;
+import com.example.demo.Repository.ImagesRepository;
+import com.example.demo.web.customConverters.ModelConverter;
+import com.example.demo.web.model.DeleteProductDTO;
+import com.example.demo.web.model.ImageDTO;
 import com.example.demo.web.model.ProductForAddProductDTO;
+import com.example.demo.web.model.ProductForUpdateProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +20,10 @@ public class WebCatalogService {
 
     private final CatalogRepository catalogRepository;
 
-    @Autowired
-    WebCatalogService(CatalogRepository catalogRepository) {
+    private final ImagesRepository imagesRepository;
+
+    WebCatalogService(ImagesRepository imagesRepository,CatalogRepository catalogRepository) {
+        this.imagesRepository = imagesRepository;
         this.catalogRepository = catalogRepository;
     }
 
@@ -61,6 +68,23 @@ public class WebCatalogService {
         catalog.setMainImage("https://docs.google.com/uc?id=1tMkSCtoDyhADnHTkq6nUe2vYoi46UgVW");
         catalog.setHash(UUID.randomUUID().toString());
         catalogRepository.save(catalog);
+    }
+
+    public void updateAndDeleteProduct(ProductForUpdateProductDTO productForUpdateProductDTO){
+        Catalog catalogFromBd = catalogRepository.findCatalogByHashContaining(productForUpdateProductDTO.getHash());
+        Catalog newCatalog = ModelConverter.getInstance().converterProductForUpdateDTOToCatalog(productForUpdateProductDTO,catalogFromBd);
+
+        catalogRepository.save(newCatalog);
+
+        for (ImageDTO image : productForUpdateProductDTO.getImagePaths()){
+            if (image.isDelete()){
+                imagesRepository.deleteByKeyImageNameAndKeyProductId(image.getImage().getKey().getImageName(),image.getImage().getKey().getProductId());
+            }
+        }
+    }
+
+    public void deleteProduct(DeleteProductDTO deleteProductDTO){
+        catalogRepository.deleteByHash(deleteProductDTO.getHash());
     }
 
 }

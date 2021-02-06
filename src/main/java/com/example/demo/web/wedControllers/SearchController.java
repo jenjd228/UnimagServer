@@ -8,6 +8,7 @@ import com.example.demo.web.model.Category;
 import com.example.demo.web.model.DeleteProductDTO;
 import com.example.demo.web.model.ProductForUpdateProductDTO;
 import com.example.demo.web.service.AuthService;
+import com.example.demo.web.service.SearchService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,20 +24,17 @@ public class SearchController {
 
     private final CatalogService catalogService;
 
-    private final CatalogRepository catalogRepository;
-
-    private final ModelMapper modelMapperCatalogToProduct;
-
     private final HashMap<Integer, Category> allCategoriesMap;
 
     private final AuthService authService;
 
-    SearchController(AuthService authService, HashMap<Integer, Category> allCategoriesMap, ModelMapper modelMapperCatalogToProduct, CatalogService catalogService, CatalogRepository catalogRepository) {
+    private final SearchService searchService;
+
+    SearchController(AuthService authService, HashMap<Integer, Category> allCategoriesMap, SearchService searchService, CatalogService catalogService) {
         this.authService = authService;
         this.allCategoriesMap = allCategoriesMap;
-        this.modelMapperCatalogToProduct = modelMapperCatalogToProduct;
+        this.searchService = searchService;
         this.catalogService = catalogService;
-        this.catalogRepository = catalogRepository;
     }
 
     @GetMapping("/search/findProducts")
@@ -58,8 +56,9 @@ public class SearchController {
             redirectAttributes.addFlashAttribute("searchByHashMessage", "Hash не должен быть пустой");
             return "redirect:/updateProduct";
         }
-        Catalog catalog = catalogRepository.findCatalogByHashContaining(hash);
-        ProductForUpdateProductDTO product = modelMapperCatalogToProduct.map(catalog, ProductForUpdateProductDTO.class);
+
+        ProductForUpdateProductDTO product = searchService.findProductForUpdateProductDTOByHash(hash);
+
         model.addAttribute("delete", new DeleteProductDTO(product.getHash()));
         model.addAttribute("product", product);
         model.addAttribute("categories", MyHashMapManager.getInstance().cloneHashMapAndSetSelected(allCategoriesMap, product.getCategory()));

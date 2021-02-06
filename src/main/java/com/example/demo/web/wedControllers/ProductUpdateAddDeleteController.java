@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 public class ProductUpdateAddDeleteController {
@@ -27,16 +28,10 @@ public class ProductUpdateAddDeleteController {
 
     private final WebCatalogService webCatalogService;
 
-    private final CatalogRepository catalogRepository;
-
-    private final ImagesRepository imagesRepository;
-
     private final AuthService authService;
 
-    ProductUpdateAddDeleteController(AuthService authService,ImagesRepository imagesRepository, CatalogRepository catalogRepository, WebCatalogService webCatalogService, HashMap<Integer, Category> allCategoriesMap){
+    ProductUpdateAddDeleteController(AuthService authService, WebCatalogService webCatalogService, HashMap<Integer, Category> allCategoriesMap){
         this.authService = authService;
-        this.imagesRepository = imagesRepository;
-        this.catalogRepository = catalogRepository;
         this.webCatalogService = webCatalogService;
         this.allCategoriesMap = allCategoriesMap;
     }
@@ -58,27 +53,25 @@ public class ProductUpdateAddDeleteController {
         if (bindingResult.hasErrors()){
             return "frameUpdateProduct";
         }
-        for (ImageDTO imageDTO : productForUpdateProductDTO.getImagePaths()){
-            if (imageDTO.getImage().getKey().getImageName() == null || imageDTO.getImage().getKey().getImageName().isEmpty() || productForUpdateProductDTO.getMainImage().isEmpty()){
-                model.addAttribute("googleImagePathErrors","Пути к картинкам не должны быть пустыми");
-                return "frameUpdateProduct";
-            }
+
+        if (checkImages(productForUpdateProductDTO.getImagePaths()) && !productForUpdateProductDTO.getMainImage().isEmpty()){
+            model.addAttribute("googleImagePathErrors","Пути к картинкам не должны быть пустыми");
+            return "frameUpdateProduct";
         }
 
-        Catalog catalogFromBd = catalogRepository.findCatalogByHashContaining(productForUpdateProductDTO.getHash());
-        Catalog newCatalog = ModelConverter.getInstance().converterProductForUpdateDTOToCatalog(productForUpdateProductDTO,catalogFromBd);
-
-        catalogRepository.save(newCatalog);
-
-        for (ImageDTO image : productForUpdateProductDTO.getImagePaths()){
-            if (image.isDelete()){
-                imagesRepository.deleteByKeyImageNameAndKeyProductId(image.getImage().getKey().getImageName(),image.getImage().getKey().getProductId());
-            }
-        }
-
+        webCatalogService.updateAndDeleteProduct(productForUpdateProductDTO);
 
         model.addAttribute("product",new ProductForUpdateProductDTO());
         return "frameUpdateProduct";
+    }
+
+    private boolean checkImages(List<ImageDTO> imageDTOS){
+        for (ImageDTO imageDTO : imageDTOS){
+            if (imageDTO.getImage().getKey().getImageName() == null || imageDTO.getImage().getKey().getImageName().isEmpty()){
+                return false;
+            }
+        }
+        return true;
     }
 
     @GetMapping("/addProduct")
@@ -114,7 +107,7 @@ public class ProductUpdateAddDeleteController {
 
     @PostMapping("/deleteProduct")
     public String deleteProduct(@ModelAttribute("delete") DeleteProductDTO deleteProductDTO){
-        catalogRepository.deleteByHash(deleteProductDTO.getHash());
+        webCatalogService.deleteProduct(deleteProductDTO);
         return "redirect:/updateProduct";
     }
 
