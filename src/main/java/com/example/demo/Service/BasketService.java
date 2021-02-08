@@ -2,8 +2,10 @@ package com.example.demo.Service;
 
 import com.example.demo.DTO.BasketProductDTO;
 import com.example.demo.Model.BasketProduct;
+import com.example.demo.Model.Catalog;
 import com.example.demo.Model.User;
 import com.example.demo.Repository.BasketRepository;
+import com.example.demo.Repository.CatalogRepository;
 import com.example.demo.Repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +26,10 @@ public class BasketService {
     @Qualifier("modelMapperToBasketProductDTO")
     private final ModelMapper modelMapperToBasketProductDTO;
 
-    BasketService(BasketRepository basketRepository, UserRepository userRepository, ModelMapper modelMapperToBasketProductDTO) {
+    private final CatalogRepository catalogRepository;
+
+    BasketService(CatalogRepository catalogRepository,BasketRepository basketRepository, UserRepository userRepository, ModelMapper modelMapperToBasketProductDTO) {
+        this.catalogRepository = catalogRepository;
         this.basketRepository = basketRepository;
         this.userRepository = userRepository;
         this.modelMapperToBasketProductDTO = modelMapperToBasketProductDTO;
@@ -46,7 +51,7 @@ public class BasketService {
 
     private BasketProductDTO convertToDto(BasketProduct product) {
         BasketProductDTO basketProductDTO = Objects.isNull(product.getCatalogProduct()) ? null : modelMapperToBasketProductDTO.map(product.getCatalogProduct(), BasketProductDTO.class);
-        basketProductDTO.setCount(product);
+        basketProductDTO.setCount(product.getCount());
         basketProductDTO.setColor(product.getColor());
         basketProductDTO.setSize(product.getSize());
         return basketProductDTO;
@@ -71,12 +76,13 @@ public class BasketService {
         return "PRODUCT_NOT_FOUND";
     }
 
-    public String addToBasket(String secureKod, Integer productId, String color, String size) {
+    public String addToBasket(String secureKod, String productHash, String color, String size) {
         User user = userRepository.findBySecureKod(secureKod);
-        if (user != null) {
+        Catalog catalog = catalogRepository.findCatalogByHashContaining(productHash);
+        if (user != null && catalog != null) {
 
             List<BasketProduct> products = user.getBasketProducts();
-            BasketProduct currentBasketProduct = basketProductCreate(user.getId(),productId,color,size);
+            BasketProduct currentBasketProduct = basketProductCreate(user.getId(),catalog.getId(),color,size);
 
             if (products.size() != 0) {
                     if (products.contains(currentBasketProduct)) {

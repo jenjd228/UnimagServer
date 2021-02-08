@@ -35,12 +35,12 @@ public class BasketController {
     }
 
     @PostMapping("addToBasket")
-    public ResponseEntity addToBasket(@RequestParam String id, @RequestParam String color, String size, @RequestParam String secureKod) {
+    public ResponseEntity addToBasket(@RequestParam String productHash, @RequestParam String color, String size, @RequestParam String secureKod) {
         String serviceResponse;
         if (size.equals("null")) {
-            serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, null);
+            serviceResponse = basketService.addToBasket(secureKod, productHash, color, null);
         } else {
-            serviceResponse = basketService.addToBasket(secureKod, Integer.parseInt(id), color, size);
+            serviceResponse = basketService.addToBasket(secureKod, productHash, color, size);
         }
         switch (serviceResponse){
             case "OK": return new ResponseEntity("OK",HttpStatus.OK);

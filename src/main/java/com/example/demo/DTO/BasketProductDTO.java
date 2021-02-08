@@ -28,7 +28,4 @@ public class BasketProductDTO {
 
     private String size; //Размер одежды
 
-    public void setCount(BasketProduct basketProduct){
-        this.count = basketProduct.getCount();
-    }
 }

@@ -39,6 +39,7 @@ public class SpringConfig {
         PropertyMap<Catalog, CatalogDTO> propertyMap = new PropertyMap<>() {
             protected void configure() {
                 map().setListImageDTO(source.getListImage());
+                map().setDateByConvertTimeWithTimeZome(source.getDate());
             }
         };
         modelMapper.addMappings(propertyMap);

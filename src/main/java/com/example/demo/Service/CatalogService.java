@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.net.InetAddress;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +57,7 @@ public class CatalogService {
                 list = catalogRepository.findBy(pageable).stream().map(this::convertToCatalogDto).toArray();
             }
         }
-
+        System.out.println(Arrays.toString(list));
         return new AbstractMap.SimpleEntry<>("OK", list);
     }
 
