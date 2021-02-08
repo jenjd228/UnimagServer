@@ -18,6 +18,9 @@ public class BasketProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "product_hash")
+    private String productHash;
+
     @Column(name = "user_id")
     private Integer userId;
 

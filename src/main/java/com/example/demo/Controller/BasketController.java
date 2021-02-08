@@ -24,9 +24,9 @@ public class BasketController {
         }
     }
 
-    @GetMapping("deleteBasketProduct/{secureKod}/{productId}")
-    public ResponseEntity deleteBasketProduct(@PathVariable String secureKod,@PathVariable Integer productId){
-        String serviceResponse = basketService.deleteProductFromBasket(secureKod,productId);
+    @GetMapping("deleteBasketProduct/{secureKod}/{productHash}")
+    public ResponseEntity deleteBasketProduct(@PathVariable String secureKod,@PathVariable String productHash){
+        String serviceResponse = basketService.deleteProductFromBasket(secureKod,productHash);
         switch (serviceResponse){
             case "OK": return new ResponseEntity("ok",HttpStatus.OK);
             case "USER_NOT_FOUND": return new ResponseEntity("USER_NOT_FOUND",HttpStatus.NOT_FOUND);
@@ -51,8 +51,8 @@ public class BasketController {
     }
 
     @PostMapping("deleteOneProductFromBasket")
-    public ResponseEntity deleteOneProductFromBasket(@RequestParam String id,@RequestParam String secureKod) {
-        String serviceResponse = basketService.deleteOneProductFromBasket(secureKod,id);
+    public ResponseEntity deleteOneProductFromBasket(@RequestParam String productHash,@RequestParam String secureKod) {
+        String serviceResponse = basketService.deleteOrAddOneProductFromBasket(secureKod,productHash,false);
         if ("OK".equals(serviceResponse)) {
             return new ResponseEntity("ok", HttpStatus.OK);
         }
@@ -60,8 +60,8 @@ public class BasketController {
     }
 
     @PostMapping("addOneProductToBasket")
-    public ResponseEntity addOneProductToBasket(@RequestParam String id,@RequestParam String secureKod) {
-        String serviceResponse = basketService.addOneProductToBasket(secureKod,id);
+    public ResponseEntity addOneProductToBasket(@RequestParam String productHash,@RequestParam String secureKod) {
+        String serviceResponse = basketService.deleteOrAddOneProductFromBasket(secureKod,productHash,true);
         if ("OK".equals(serviceResponse)) {
             return new ResponseEntity("ok", HttpStatus.OK);
         }

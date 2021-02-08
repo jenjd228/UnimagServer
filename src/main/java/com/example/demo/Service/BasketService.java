@@ -58,7 +58,7 @@ public class BasketService {
     }
 
     @Transactional
-    public String deleteProductFromBasket(String secureKod, Integer productId) {
+    public String deleteProductFromBasket(String secureKod, String productHash) {
         User user = userRepository.findBySecureKod(secureKod);
         if (user == null) {
             return "USER_NOT_FOUND";
@@ -66,7 +66,7 @@ public class BasketService {
         List<BasketProduct> list = user.getBasketProducts();
         if (list != null) {
             for (BasketProduct basketProduct : list) {
-                if (basketProduct.getProductId().equals(productId)) {
+                if (basketProduct.getProductHash().equals(productHash)) {
                     basketRepository.deleteById(basketProduct.getId());
                     break;
                 }
@@ -82,7 +82,7 @@ public class BasketService {
         if (user != null && catalog != null) {
 
             List<BasketProduct> products = user.getBasketProducts();
-            BasketProduct currentBasketProduct = basketProductCreate(user.getId(),catalog.getId(),color,size);
+            BasketProduct currentBasketProduct = basketProductCreate(productHash,user.getId(),catalog.getId(),color,size);
 
             if (products.size() != 0) {
                     if (products.contains(currentBasketProduct)) {
@@ -95,8 +95,9 @@ public class BasketService {
         return "USER_NOT_FOUND";
     }
 
-    private BasketProduct basketProductCreate(Integer userId,Integer productId,String color,String size){
+    private BasketProduct basketProductCreate(String productHash,Integer userId,Integer productId,String color,String size){
         BasketProduct basketProduct = new BasketProduct();
+        basketProduct.setProductHash(productHash);
         basketProduct.setUserId(userId);
         basketProduct.setProductId(productId);
         basketProduct.setCount(1);
@@ -105,29 +106,16 @@ public class BasketService {
         return basketProduct;
     }
 
-    public String deleteOneProductFromBasket(String secureKod, String id) {
+    public String deleteOrAddOneProductFromBasket(String secureKod, String productHash, boolean flag) {
         User user = userRepository.findBySecureKod(secureKod);
         if (user != null) {
-            List<BasketProduct> basketProduct1 = user.getBasketProducts();
-            for (BasketProduct basketProduct : basketProduct1) {
-                if (basketProduct.getProductId().toString().equals(id)) {
-                    basketProduct.setCount(basketProduct.getCount() - 1);
-                    basketRepository.save(basketProduct);
-                    break;
-                }
-            }
-            return "OK";
-        }
-        return "USER_NOT_FOUND";
-    }
-
-    public String addOneProductToBasket(String secureKod, String id) {
-        User user = userRepository.findBySecureKod(secureKod);
-        if (user != null) {
-            List<BasketProduct> basketProduct1 = user.getBasketProducts();
-            for (BasketProduct basketProduct : basketProduct1) {
-                if (basketProduct.getProductId().toString().equals(id)) {
-                    basketProduct.setCount(basketProduct.getCount() + 1);
+            for (BasketProduct basketProduct : user.getBasketProducts()) {
+                if (basketProduct.getProductHash().equals(productHash)) {
+                    if (flag){
+                        basketProduct.setCount(basketProduct.getCount() + 1);
+                    }else {
+                        basketProduct.setCount(basketProduct.getCount() - 1);
+                    }
                     basketRepository.save(basketProduct);
                     break;
                 }

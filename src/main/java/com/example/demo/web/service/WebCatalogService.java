@@ -65,7 +65,7 @@ public class WebCatalogService {
         catalog.setDescriptions(productDTO.getDescriptions());
         catalog.setPrice(productDTO.getPrice());
         catalog.setTitle(productDTO.getTitle());
-        catalog.setMainImage("https://docs.google.com/uc?id=1tMkSCtoDyhADnHTkq6nUe2vYoi46UgVW");
+        catalog.setMainImage(productDTO.getMainImage());
         catalog.setHash(UUID.randomUUID().toString());
         catalogRepository.save(catalog);
     }

@@ -25,7 +25,8 @@ public class SpringConfig {
         ModelMapper modelMapper = new ModelMapper();
         PropertyMap<Catalog, BasketProductDTO> propertyMap = new PropertyMap<>() {
             protected void configure() {
-                map().setProductId(source.getId());
+                map().setProductHash(source.getHash());
+
             }
         };
         modelMapper.addMappings(propertyMap);

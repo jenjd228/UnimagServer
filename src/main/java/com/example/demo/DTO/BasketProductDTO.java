@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BasketProductDTO {
 
-    private Integer productId;
+    private String productHash;
 
-    private String imageName;
+    private String mainImage;
 
     private String category;
 
