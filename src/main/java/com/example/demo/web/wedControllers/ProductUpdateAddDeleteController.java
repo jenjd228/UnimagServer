@@ -50,12 +50,13 @@ public class ProductUpdateAddDeleteController {
     public String updateProduct(Model model,@Valid @ModelAttribute("product") ProductForUpdateProductDTO productForUpdateProductDTO,BindingResult bindingResult){
         HashMap<Integer, Category> newSelectedMap = MyHashMapManager.getInstance().cloneHashMapAndSetSelected(allCategoriesMap, productForUpdateProductDTO.getCategory());
         model.addAttribute("categories", newSelectedMap);
-        if (bindingResult.hasErrors()){
+
+        if (productForUpdateProductDTO.getMainImage().isEmpty() || isImagesEmpty(productForUpdateProductDTO.getImagePaths())){
+            model.addAttribute("googleImagePathErrors","Пути к картинкам не должны быть пустыми");
             return "frameUpdateProduct";
         }
 
-        if (checkImages(productForUpdateProductDTO.getImagePaths()) && !productForUpdateProductDTO.getMainImage().isEmpty()){
-            model.addAttribute("googleImagePathErrors","Пути к картинкам не должны быть пустыми");
+        if (bindingResult.hasErrors()){
             return "frameUpdateProduct";
         }
 
@@ -65,13 +66,13 @@ public class ProductUpdateAddDeleteController {
         return "frameUpdateProduct";
     }
 
-    private boolean checkImages(List<ImageDTO> imageDTOS){
+    private boolean isImagesEmpty(List<ImageDTO> imageDTOS){
         for (ImageDTO imageDTO : imageDTOS){
             if (imageDTO.getImage().getKey().getImageName() == null || imageDTO.getImage().getKey().getImageName().isEmpty()){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     @GetMapping("/addProduct")
